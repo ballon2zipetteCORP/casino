@@ -11,6 +11,10 @@
     "type-check": "vue-tsc --build"
   },
   "dependencies": {
+    "babylonjs": "^7.51.0",
+    "babylonjs-loaders": "^7.51.0",
+    "keycloak-js": "^26.2.0",
+    "phaser": "^3.88.2",
     "pinia": "^3.0.1",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"

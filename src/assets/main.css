@@ -1,35 +1,63 @@
-@import './base.css';
+:root {
+    --primary: #0D6EFD;
+    --primary-100: #1A82FF;
+    --primary-200: #4D9EFF;
+    --primary-300: #80BBFF;
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+    --secondary: #D97706;
+    --secondary-100: #E0892B;
+    --secondary-200: #F1A14D;
+    --secondary-300: #FBC288;
+
+    --gray-1: #1E1E1E;
+    --gray-2: #5A5A5A;
+    --gray-3: #B0B0B0;
+
+    --black: #121212;
+    --white: white;
+
+    --red: #B91C1C;
+    --red-200: #F87171;
+
+    --yellow: #EAB308;
+    --yellow-200: #FDE047;
+
+    --orange: #F97316;
+    --orange-200: #FDBA74;
+
+    --green: #16A34A;
+    --green-200: #86EFAC;
+
+    --shadow-settings-1: 0px 4px 12px #00000055;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+@font-face {
+    font-family: "poppins-bold";
+    src: url(/fonts/poppins-bold.ttf);
+}
+@font-face {
+    font-family: "poppins-light";
+    src: url(/fonts/poppins-light.ttf);
+}
+@font-face {
+    font-family: "poppins-medium";
+    src: url(/fonts/poppins-medium.ttf);
+}
+@font-face {
+    font-family: "poppins-regular";
+    src: url(/fonts/poppins-regular.ttf);
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+html, body {
+    font-family: "poppins-regular", sans-serif;
+    background-color: var(--black);
+    color: var(--white);
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
 }

@@ -1,9 +1,7 @@
-<script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
-</script>
-
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <GameWheel />
 </template>
+
+<script setup>
+import GameWheel from '@/components/games/GameWheel.vue';
+</script>
