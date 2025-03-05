@@ -1,34 +1,20 @@
 :root {
-    --primary: #0D6EFD;
-    --primary-100: #1A82FF;
-    --primary-200: #4D9EFF;
-    --primary-300: #80BBFF;
+    --primary: #5F6EFF;
 
-    --secondary: #D97706;
-    --secondary-100: #E0892B;
-    --secondary-200: #F1A14D;
-    --secondary-300: #FBC288;
+    --gray-1: #222A35;
+    --gray-2: #444D5A;
+    --black: #14171F;
 
-    --gray-1: #1E1E1E;
-    --gray-2: #5A5A5A;
-    --gray-3: #B0B0B0;
+    --white: #ffff;
 
-    --black: #121212;
-    --white: white;
+    --shadow-settings-1: 0 0 5.4px #3d3e41cf;;
+}
 
-    --red: #B91C1C;
-    --red-200: #F87171;
-
-    --yellow: #EAB308;
-    --yellow-200: #FDE047;
-
-    --orange: #F97316;
-    --orange-200: #FDBA74;
-
-    --green: #16A34A;
-    --green-200: #86EFAC;
-
-    --shadow-settings-1: 0px 4px 12px #00000055;
+*, *::after, *::before {
+    outline: none;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 @font-face {
@@ -54,10 +40,24 @@ html, body {
     color: var(--white);
 }
 
-canvas {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+button {
+    border: unset;
+    background-color: transparent;
+    color: var(--primary);
+
+    border-radius: 100px;
+    font-size: 1.5em;
+    padding: .1em .5em;
+    width: fit-content;
+
     cursor: pointer;
+
+    display: block;
+
+    font-family: "poppins-regular",sans-serif;
+
+    &.primary {
+        background-color: var(--primary);
+        color: var(--white);
+    }
 }
