@@ -9,7 +9,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'home'}">
+                    <router-link :to="{name: 'shop'}">
                         <mdicon name="cart" /> Boutique
                     </router-link>
                 </li>
