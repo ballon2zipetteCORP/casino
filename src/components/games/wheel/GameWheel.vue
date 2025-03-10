@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { onBeforeUnmount, ref, watch } from 'vue';
 
 import GameWheelTable from './GameWheelTable.vue';
 import GameWheelSpin from './GameWheelSpin.vue';
@@ -47,7 +47,12 @@ const handleMessages = () => {
 }
 
 const showResult = (number: number) => {
-    console.log(number, amountWon.value); // TODO propper result
+    // TODO propper result
+    if(amountWon.value > 0) {
+        alert("Montant gagné: " + amountWon.value);
+    } else if(hasLost.value) {
+        alert("Perdu !");
+    }
     
     reset();
 }
@@ -63,7 +68,11 @@ watch(me, value => {
         useWebsocketStore().connect("EUROPEAN_ROULETTE");
         handleMessages();
     }
-}, {immediate: true})
+}, {immediate: true});
+
+onBeforeUnmount(() => {
+    useWebsocketStore().close();
+})
 </script>
 
 <style scoped>

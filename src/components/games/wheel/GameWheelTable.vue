@@ -6,8 +6,15 @@
     </button>
     <div>
         <label for="bet">Ma mise</label>
-        <input id="bet" min="0" max="100" :step=".5" type="number" v-model="bet" />
-        <span class="devise">ZPC</span>
+        <input 
+            :disabled="!!pickedChoice" 
+            id="bet"
+            :step=".5" 
+            type="number" 
+            v-model="bet" 
+            @input="verifyNumberInputEntry"
+        />
+        <span class="devise" :class="{'disabled': !!pickedChoice}">ZPC</span>
     </div>
 </header>
 
@@ -228,6 +235,7 @@ import { computed, onMounted, ref } from 'vue';
 const {me} = storeToRefs(useAuthenticationStore());
 
 const bet = ref<number>(0);
+const previousBet = ref<number>(0);
 
 // numbers 0 to 36
 const ALL_NUMBERS = new Array(37).fill(null).map((_, i) => i);
@@ -303,6 +311,18 @@ const createHoverEvent = (refName: string, elements: number[]) => {
     }
 }
 
+const verifyNumberInputEntry = (event: Event) => {
+    const target = event.target! as HTMLInputElement;
+    if(target) {
+        const value = parseFloat(target.value);
+        if(value > me.value?.zipetteCoins!) {
+            bet.value = me.value?.zipetteCoins!;    
+        } else if(value < 1) {
+            bet.value = 0;
+        }
+    }
+}
+
 const reset = () => {
     resetUserSelection();
     useWebsocketStore().send({
@@ -324,7 +344,12 @@ onMounted(() => {
         refs.value[id] = element;
         element.onclick = () => {
             pickedChoice.value = id;
-            me.value!.zipetteCoins -= bet.value;
+            
+            if(previousBet.value !== bet.value) {
+                me.value!.zipetteCoins -= bet.value;
+                previousBet.value = bet.value;
+            }
+
             useWebsocketStore().send({
                 type: "USER_SELECTION",
                 data: {
@@ -359,7 +384,7 @@ g[id] {
 header {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 1em;
     flex-direction: row-reverse;
 
@@ -392,11 +417,16 @@ header>div>input {
     border-bottom-right-radius: 10px;
     
     min-width: 10em;
+    transition: all .5s ease;
     
     &::-webkit-inner-spin-button, 
     &::-webkit-outer-spin-button { 
         -webkit-appearance: none; 
         margin: 0; 
+    }
+
+    &:disabled {
+        opacity: .5;
     }
 }
 header>div>span.devise {
@@ -407,9 +437,12 @@ header>div>span.devise {
     transform: translateY(-50%);
 
     color: var(--gray-3);
-    background-color: var(--gray-2);
     padding-left: 1em;
     user-select: none;
+
+    &.disabled {
+        opacity: .5;
+    }
 }
 header>button.primary {
     display: flex;

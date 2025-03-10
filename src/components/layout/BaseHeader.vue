@@ -8,6 +8,11 @@
                        <mdicon name="home" /> Liste des jeux
                     </router-link>
                 </li>
+                <li>
+                    <router-link :to="{name: 'home'}">
+                        <mdicon name="cart" /> Boutique
+                    </router-link>
+                </li>
             </ul>
         </nav>
         <div class="left">
@@ -62,6 +67,7 @@ header nav ul {
     display: flex;
     align-items: center;
     list-style: none;
+    gap: 1em;
 
     &>li>a {
         text-decoration: none;
