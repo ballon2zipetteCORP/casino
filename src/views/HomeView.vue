@@ -1,7 +1,7 @@
 <template>
-  <GameWheel />
+  <home-page />
 </template>
 
 <script setup>
-import GameWheel from '@/components/games/wheel/GameWheel.vue';
+import HomePage from '@/components/games/HomePage.vue';
 </script>

@@ -1,5 +1,6 @@
 <template>
-<svg ref="spinRef" width="573" height="579" viewBox="0 0 573 579" fill="none" xmlns="http://www.w3.org/2000/svg">
+<div class="parent">
+    <svg ref="spinRef" width="573" height="579" viewBox="0 0 573 579" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M286.5 -7.35585e-05C444.73 -8.04749e-05 573 129.613 573 289.5C573 449.386 444.73 579 286.5 579C128.27 579 -5.66559e-06 449.386 -1.26544e-05 289.5C-1.96433e-05 129.614 128.27 -6.6642e-05 286.5 -7.35585e-05ZM286.5 444.3C371.108 444.3 439.696 374.993 439.696 289.5C439.696 204.006 371.108 134.7 286.5 134.7C201.892 134.7 133.304 204.006 133.304 289.5C133.304 374.993 201.892 444.3 286.5 444.3Z" fill="#222A35"/>
 <path d="M309.176 27.9205C323.82 29.1646 338.333 31.6654 352.559 35.3958L334.543 105.735C324.255 103.037 313.758 101.229 303.167 100.329L309.176 27.9205Z" fill="url(#paint0_radial_49_87)"/>
 <g clip-path="url(#paint1_angular_49_87_clip_path)" data-figma-skip-parse="true"><g transform="matrix(1.14757e-08 0.262533 -0.259466 1.13416e-08 287.466 289.533)"><foreignObject x="-1003.85" y="-1003.85" width="2007.71" height="2007.71"><div xmlns="http://www.w3.org/1999/xhtml" style="background:conic-gradient(from 90deg,rgba(0, 98, 0, 1) 0deg,rgba(1, 200, 1, 1) 138.6deg,rgba(0, 98, 0, 1) 360deg);height:100%;width:100%;opacity:1"></div></foreignObject></g></g><path d="M265.165 27.9715C279.807 26.6934 294.529 26.6763 309.173 27.9203L303.165 100.329C292.574 99.4291 281.927 99.4415 271.337 100.366L265.165 27.9715Z" data-figma-gradient-fill="{&#34;type&#34;:&#34;GRADIENT_ANGULAR&#34;,&#34;stops&#34;:[{&#34;color&#34;:{&#34;r&#34;:0.0039215688593685627,&#34;g&#34;:0.78431373834609985,&#34;b&#34;:0.0039215688593685627,&#34;a&#34;:1.0},&#34;position&#34;:0.38499999046325684},{&#34;color&#34;:{&#34;r&#34;:0.0019215687643736601,&#34;g&#34;:0.38431373238563538,&#34;b&#34;:0.0019215687643736601,&#34;a&#34;:1.0},&#34;position&#34;:1.0}],&#34;stopsVar&#34;:[{&#34;color&#34;:{&#34;r&#34;:0.0039215688593685627,&#34;g&#34;:0.78431373834609985,&#34;b&#34;:0.0039215688593685627,&#34;a&#34;:1.0},&#34;position&#34;:0.38499999046325684},{&#34;color&#34;:{&#34;r&#34;:0.0019215687643736601,&#34;g&#34;:0.38431373238563538,&#34;b&#34;:0.0019215687643736601,&#34;a&#34;:1.0},&#34;position&#34;:1.0}],&#34;transform&#34;:{&#34;m00&#34;:2.2951375285629183e-05,&#34;m01&#34;:-518.93231201171875,&#34;m02&#34;:546.93231201171875,&#34;m10&#34;:525.06622314453125,&#34;m11&#34;:2.2683254428557120e-05,&#34;m12&#34;:26.999916076660156},&#34;opacity&#34;:1.0,&#34;blendMode&#34;:&#34;NORMAL&#34;,&#34;visible&#34;:true}"/>
@@ -151,21 +152,39 @@
 </defs>
 </svg>
 
+<div class="next-spin-in">
+    <h3>Prochain tour</h3>
+    <h2>{{ nextSpinIn }}</h2>
+</div>
+</div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
-const numbers = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26]; // Ordre réel
-const totalNumbers = numbers.length;
-const degreesPerNumber = 360 / totalNumbers;
+const numbers = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
+const degreesPerNumber = 360 / numbers.length;
 
 const spinRef = ref<HTMLElement|null>(null);
 
 const currentRotation = ref<number>(0);
 const isSpinning = ref<boolean>(false);
 
+const props = defineProps<{ nextSpin: Date|null }>();
 const emit = defineEmits(["onResult"]);
+
+const now = ref<number>(Date.now());
+
+const nextSpinIn = computed(() => {
+    const _format = (number: number) => number.toString().padStart(2, "0");
+
+    const nextSpin = props.nextSpin?.getTime();
+    if(nextSpin) {
+        const diff = new Date(nextSpin-now.value);
+        return `${_format(diff.getMinutes())}:${_format(diff.getSeconds())}`;
+    }
+    return '';
+});
 
 const spin = (selectedNumber: number) => {
     if (isSpinning.value) return;
@@ -175,20 +194,21 @@ const spin = (selectedNumber: number) => {
     const exactAngle = 360 - (index * degreesPerNumber);
     const extraSpins = 5;
     const finalAngle = (extraSpins * 360) + exactAngle;
-
+    const duration = 4e3;
+    
     let startTime: any = null;
-    let duration = 4e3;
     let startRotation = currentRotation.value;
 
-    spinRef.value!.style.transform = `rotate(${finalAngle}deg)`;
-
     const animateRotation = (timestamp: any) => {
-        if (!startTime) startTime = timestamp;
-        const progress = (timestamp - startTime) / duration;
+        if (!startTime) {
+            startTime = timestamp;
+        }
+        // TODO: propper spin animation
+        const progression = (timestamp - startTime) / duration;
 
-        if (progress < 1) {
+        if (progression < 1) {
             currentRotation.value = startRotation + (finalAngle - startRotation);
-            spinRef.value!.style.transform = `rotate(${currentRotation.value % 360}deg)`;
+            spinRef.value!.style.transform = `rotate(${currentRotation.value}deg)`;
             requestAnimationFrame(animateRotation);
         } else {
             isSpinning.value = false;
@@ -199,6 +219,10 @@ const spin = (selectedNumber: number) => {
     requestAnimationFrame(animateRotation);
 }
 
+onMounted(() => {
+    setInterval(() => now.value = Date.now(), 1e3);
+})
+
 defineExpose({ spin });
 
 </script>
@@ -206,5 +230,25 @@ defineExpose({ spin });
 <style scoped>
 svg {
     transition: transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+}
+
+div.parent {
+    position: relative;
+}
+
+div.next-spin-in {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    text-align: center;
+
+    &>h3 {
+        color: var(--gray-3);
+    }
+    &>h2 {
+        font-size: 2em;
+    }
 }
 </style>

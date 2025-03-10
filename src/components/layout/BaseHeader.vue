@@ -1,32 +1,87 @@
 <template>
+    <!-- TODO: skeleton loading -->
     <header>
-        <div class="money-field">
-            <span class="devise">
-                ZP
-            </span>
-            <span class="money">1 300<span>,00</span></span>
+        <nav>
+            <ul>
+                <li>
+                    <router-link :to="{name: 'home'}">
+                       <mdicon name="home" /> Liste des jeux
+                    </router-link>
+                </li>
+            </ul>
+        </nav>
+        <div class="left">
+            <template v-if="isAuthenticated">
+                <div class="money-field">
+                    <span class="devise">
+                        ZPC
+                    </span>
+                    <span class="money" v-html="formattedZipetteCoins"></span>
 
-            <button class="primary">+</button>
-        </div>
-        <div @click="authenticationStore.logout" class="profile-picture">
-            <img loading="lazy" src="/images/default-profile.jpg" alt="profile picture" />
+                    <button class="primary">+</button>
+                </div>
+                <div @click="authenticationStore.logout" class="profile-picture">
+                    <img loading="lazy" src="/images/default-profile.jpg" alt="profile picture" />
+                </div>
+            </template>
+            <template v-else>
+                <button @click="authenticationStore.login" class="primary login">
+                    Connexion/Inscription
+                    <mdicon name="login" />
+                </button>
+            </template>
         </div>
     </header>
 </template>
 
 <script lang="ts" setup>
 import { useAuthenticationStore } from '@/stores/useAuthenticationStore';
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 
 const authenticationStore = useAuthenticationStore();
+const {isAuthenticated, me} = storeToRefs(authenticationStore);
+
+const formattedZipetteCoins = computed(() => {
+    const money = me?.value?.zipetteCoins ?? 0;
+    const zipetteCoins = parseFloat(money.toString())?.toString();
+    const [numbers, digits = "0"] = zipetteCoins.split(".");
+    return `${numbers}<span style="font-size: 1em;color: var(--gray-2);">,${(digits).padStart(2, "0")}</span>`
+});
 </script>
 
 <style scoped>
 header {
-    padding: 2em 3em;
+    padding: 2em 0;
     display: flex;
     align-items: center;
     gap: 1em;
-    justify-content: flex-end;
+    justify-content: space-around;
+}
+header nav ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+
+    &>li>a {
+        text-decoration: none;
+        color: white;
+        transition: all .5s ease;
+
+        &:hover {
+            color: var(--primary);
+        }
+    }
+}
+button.primary.login {
+    display: flex;
+    align-items: center;
+    gap: .5em;
+}
+div.left {
+    display: flex;
+    align-items: center;
+    gap: 1em;
 }
 div.money-field {
     font-size: 1em;
@@ -40,6 +95,11 @@ div.money-field {
     display: flex;
     gap: 1em;
     align-items: center;
+
+    & button {
+        border-radius: 100px;
+        padding: .5em .9em;
+    }
 
     &>span.devise {
         background-color: var(--tertiary);

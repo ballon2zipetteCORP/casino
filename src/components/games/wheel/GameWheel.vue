@@ -1,6 +1,6 @@
 <template>
     <div class="center">
-        <game-wheel-spin @on-result="showResult" ref="spinRef" />
+        <game-wheel-spin :next-spin="nextSpin" @on-result="showResult" ref="spinRef" />
         <game-wheel-table ref="tableRef" />
     </div>
     
@@ -8,21 +8,62 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { ref, watch } from 'vue';
 
 import GameWheelTable from './GameWheelTable.vue';
 import GameWheelSpin from './GameWheelSpin.vue';
 
-const spinRef = ref<typeof GameWheelSpin|null>(null);
-const tableRef = ref<typeof GameWheelSpin|null>(null);
+import { useWebsocketStore } from '@/stores/useWebsocketStore';
+import { storeToRefs } from 'pinia';
+import { useAuthenticationStore } from '@/stores/useAuthenticationStore';
 
-const showResult = (number: number) => {
-    alert(number); // TODO propper result
+const { me } = storeToRefs(useAuthenticationStore());
+
+const spinRef = ref<typeof GameWheelSpin|null>(null);
+const tableRef = ref<typeof GameWheelTable|null>(null);
+const nextSpin = ref<Date|null>(null);
+
+const amountWon = ref<number>(0);
+const hasLost = ref<boolean>(false);
+
+const handleMessages = () => {  
+    useWebsocketStore().addMessageListener(message => {
+        switch(message.type) {
+            case "INFORMATION":
+                nextSpin.value = new Date(message.data?.nextSpin);
+                break;
+            case "START_SPINNING":
+                spinRef?.value?.spin(message.data?.number);
+                break;
+            case "REWARD":
+                amountWon.value = message.data?.amount;
+                me.value!.zipetteCoins += amountWon.value;
+                break;
+            case "BET_LOST":
+                hasLost.value = true;
+                break;
+        }
+    });
 }
 
-onMounted(() => {
-    spinRef.value?.spin(0);
-})
+const showResult = (number: number) => {
+    console.log(number, amountWon.value); // TODO propper result
+    
+    reset();
+}
+
+const reset = () => {
+    hasLost.value = false;
+    amountWon.value = 0;
+    tableRef?.value?.resetUserSelection();
+}
+
+watch(me, value => {
+    if(value) {
+        useWebsocketStore().connect("EUROPEAN_ROULETTE");
+        handleMessages();
+    }
+}, {immediate: true})
 </script>
 
 <style scoped>
@@ -30,5 +71,6 @@ div.center {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 3em;
 }
 </style>

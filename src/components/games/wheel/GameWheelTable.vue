@@ -1,4 +1,16 @@
 <template>
+<header>
+    <button class="primary" @click="reset" :disabled="bet < 1">
+        Retirer ma mise
+        <mdicon name="close" />
+    </button>
+    <div>
+        <label for="bet">Ma mise</label>
+        <input id="bet" min="0" max="100" :step=".5" type="number" v-model="bet" />
+        <span class="devise">ZPC</span>
+    </div>
+</header>
+
 <svg width="1063" height="332" viewBox="0 0 1063 332" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g>
     <g>
@@ -206,9 +218,16 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { useAuthenticationStore } from '@/stores/useAuthenticationStore';
+import { useWebsocketStore } from '@/stores/useWebsocketStore';
+import { storeToRefs } from 'pinia';
+import { computed, onMounted, ref } from 'vue';
 
 /** CONSTANTS */
+
+const {me} = storeToRefs(useAuthenticationStore());
+
+const bet = ref<number>(0);
 
 // numbers 0 to 36
 const ALL_NUMBERS = new Array(37).fill(null).map((_, i) => i);
@@ -258,16 +277,43 @@ const TABLE_CUSTOM_SIGNS_MAPPER: Record<string, number[]> = {
 /** CONSTANTS */
 
 const refs = ref<Record<string, HTMLElement>>({});
+
 const pickedChoice = ref<string>("");
+const pickedChoiceElements = computed(() => {
+    if(!pickedChoice.value.trim()) {
+        return []
+    }
+    return TABLE_CUSTOM_SIGNS_MAPPER[pickedChoice.value] ?? [pickedChoice.value]
+})
 
 const createHoverEvent = (refName: string, elements: number[]) => {
-    const elements2Disable = ALL_NUMBERS.filter(el => !elements.includes(el) && el !== 0);
+    const elements2Disable = ALL_NUMBERS.filter(el => !elements.includes(el));
     refs.value[refName].onmouseenter = () => {
+        pickedChoiceElements.value.forEach(el => refs.value[el].classList.remove('disabled'));
         elements2Disable.forEach(el => refs.value[el].classList.add('disabled'));
+        elements.forEach(el => refs.value[el].classList.remove('disabled'));
     }
     refs.value[refName].onmouseleave = () => {
-        elements2Disable.forEach(el => refs.value[el].classList.remove('disabled'));
+        elements.forEach(el => refs.value[el].classList.add('disabled'));
+        pickedChoiceElements.value.forEach(el => refs.value[el].classList.remove('disabled'));
+
+        if(!pickedChoiceElements.value.length) {
+            ALL_NUMBERS.forEach(el => refs.value[el].classList.remove('disabled'));
+        }
     }
+}
+
+const reset = () => {
+    resetUserSelection();
+    useWebsocketStore().send({
+        type: "USER_BET_REMOVED"
+    })
+}
+
+const resetUserSelection = () => {
+    pickedChoice.value = "";
+    bet.value = 0;
+    ALL_NUMBERS.forEach(el => refs.value[el].classList.remove('disabled'));
 }
 
 onMounted(() => {
@@ -278,6 +324,17 @@ onMounted(() => {
         refs.value[id] = element;
         element.onclick = () => {
             pickedChoice.value = id;
+            me.value!.zipetteCoins -= bet.value;
+            useWebsocketStore().send({
+                type: "USER_SELECTION",
+                data: {
+                    selection: id,
+                    bet: bet.value
+                }
+            });
+
+            ALL_NUMBERS.forEach(el => refs.value[el].classList.add("disabled"));
+            pickedChoiceElements.value.forEach(el => refs.value[el].classList.remove("disabled"));
         }
     }
 
@@ -286,7 +343,7 @@ onMounted(() => {
     }
 });
 
-defineExpose({ pickedChoice });
+defineExpose({ resetUserSelection });
 </script>
 
 <style scoped>
@@ -296,6 +353,81 @@ g[id] {
 
     &.disabled {
         opacity: .1;
+    }
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1em;
+    flex-direction: row-reverse;
+
+    width: 70%;
+}
+header>div {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+header>div>label {
+    font-size: 1.2em;
+    background-color: var(--gray-1);
+    padding: .68em .8em;
+
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+header>div>input {
+    padding: .53em .8em;
+    font-size: 1.3em;
+    
+    border: 1px solid var(--gray-2);
+    background-color: var(--gray-2);
+    color: white;
+
+    font-family: "poppins-medium", sans-serif;
+
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    
+    min-width: 10em;
+    
+    &::-webkit-inner-spin-button, 
+    &::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+}
+header>div>span.devise {
+    position: absolute;
+    top: 50%;
+    right: 1em;
+
+    transform: translateY(-50%);
+
+    color: var(--gray-3);
+    background-color: var(--gray-2);
+    padding-left: 1em;
+    user-select: none;
+}
+header>button.primary {
+    display: flex;
+    align-items: center;
+    gap: .5em;
+
+    background-color: transparent;
+    border: 1px solid var(--red);
+    box-shadow: unset;
+    color: var(--red);
+
+    padding: .5em .8em;
+    border-radius: 10px;
+    font-size: 1.3em;
+
+    &:not(:disabled):hover {
+        background-color: var(--red);
+        color: white;
     }
 }
 </style>
