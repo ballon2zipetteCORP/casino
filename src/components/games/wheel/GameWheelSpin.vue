@@ -212,7 +212,10 @@ const spin = (selectedNumber: number) => {
         duration,
         rotation: targetedAngle,
         transformOrigin: '50% 50%',
-        ease: "power4"
+        ease: "power4",
+        onComplete: () => {
+            emit("onResult", selectedNumber);
+        }
     });
     luckywheel.play();
 }
