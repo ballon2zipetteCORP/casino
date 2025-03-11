@@ -1,6 +1,6 @@
 <template>
 <header>
-    <button class="primary" @click="reset" :disabled="bet < 1">
+    <button class="primary" @click="reset" :disabled="bet < 1 && !pickedChoice">
         Retirer ma mise
         <mdicon name="close" />
     </button>
@@ -355,6 +355,8 @@ onMounted(() => {
 
         refs.value[id] = element;
         element.onclick = () => {
+            if(bet.value < 1) return;
+
             pickedChoice.value = id;
             
             if(previousBet.value !== bet.value) {
