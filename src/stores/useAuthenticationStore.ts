@@ -36,7 +36,8 @@ export const useAuthenticationStore = defineStore('authenticationStore', () => {
             if(isAuthenticated.value) return;
             const authenticated = await keycloak.init({ 
                 onLoad: 'check-sso', 
-                checkLoginIframe: false
+                checkLoginIframe: false,
+                redirectUri: window.origin
             });
             
             isAuthenticated.value = authenticated;
