@@ -37,7 +37,7 @@ const handleMessages = () => {
                 spinRef?.value?.spin(message.data?.number);
                 break;
             case "REWARD":
-                amountWon.value = message.data?.amount;
+                amountWon.value = message.data?.amount ?? 0;
                 break;
             case "BET_LOST":
                 hasLost.value = true;
@@ -47,8 +47,8 @@ const handleMessages = () => {
 }
 
 const showResult = () => {
-    me.value!.zipetteCoins += amountWon.value;
     if(amountWon.value > 0) {
+        me.value!.zipetteCoins += amountWon.value;
         window.toast({
             level: "INFO",
             title: "Vous avez gagné " + amountWon.value + " ZPC !"
@@ -79,7 +79,6 @@ watch(me, value => {
 
 onBeforeUnmount(() => {
     useWebsocketStore().close();
-    tableRef?.value?.giveMoneyBack();
 })
 </script>
 

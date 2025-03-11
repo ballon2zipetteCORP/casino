@@ -13,6 +13,7 @@
   "dependencies": {
     "babylonjs": "^7.51.0",
     "babylonjs-loaders": "^7.51.0",
+    "gsap": "^3.12.7",
     "keycloak-js": "^26.2.0",
     "mdi-vue": "^3.0.13",
     "phaser": "^3.88.2",
