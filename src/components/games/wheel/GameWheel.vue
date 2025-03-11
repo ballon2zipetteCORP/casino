@@ -1,10 +1,10 @@
 <template>
-    <div class="center">
-        <game-wheel-spin :next-spin="nextSpin" @on-result="showResult" ref="spinRef" />
-        <game-wheel-table ref="tableRef" />
-    </div>
-    
-    {{  tableRef!?.pickedChoice }}
+    <BaseGame>
+        <div class="center">
+            <game-wheel-spin :next-spin="nextSpin" @on-result="showResult" ref="spinRef" />
+            <game-wheel-table ref="tableRef" />
+        </div>
+    </BaseGame>
 </template>
 
 <script lang="ts" setup>
@@ -16,6 +16,7 @@ import GameWheelSpin from './GameWheelSpin.vue';
 import { useWebsocketStore } from '@/stores/useWebsocketStore';
 import { storeToRefs } from 'pinia';
 import { useAuthenticationStore } from '@/stores/useAuthenticationStore';
+import BaseGame from '../BaseGame.vue';
 
 const { me } = storeToRefs(useAuthenticationStore());
 

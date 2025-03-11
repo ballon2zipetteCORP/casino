@@ -10,6 +10,8 @@ useAuthenticationStore().authenticate();
 
 <template>
   <base-header />
-  <router-view />
+  <main>
+    <router-view />
+  </main>
   <base-footer />
 </template>
