@@ -16,36 +16,41 @@
             </ul>
         </nav>
         <div class="left">
-            <template v-if="isAuthenticated">
-                <div class="money-field">
-                    <span class="devise">
-                        ZPC
-                    </span>
-                    <span class="money" v-html="formattedZipetteCoins"></span>
-
-                    <button class="primary">+</button>
-                </div>
-                <div class="profile-picture">
-                    <div @click="isToggled = !isToggled" class="picture">
-                        <img loading="lazy" src="/images/default-profile.jpg" alt="profile picture" />
-                        <span class="open">
-                            <mdicon name="chevron-down" />
+            <template v-if="!isLoading">
+                <template v-if="isAuthenticated">
+                    <div class="money-field">
+                        <span class="devise">
+                            ZPC
                         </span>
-                    </div>
+                        <span class="money" v-html="formattedZipetteCoins"></span>
 
-                    <ul v-show="isToggled" class="dropdown">
-                        <li class="disconnect" @click="authenticationStore.logout">
-                            Déconnexion
-                            <mdicon name="logout" />
-                        </li>
-                    </ul>
-                </div>
+                        <button class="primary">+</button>
+                    </div>
+                    <div class="profile-picture">
+                        <div @click="isToggled = !isToggled" class="picture">
+                            <img loading="lazy" src="/images/default-profile.jpg" alt="profile picture" />
+                            <span class="open">
+                                <mdicon name="chevron-down" />
+                            </span>
+                        </div>
+
+                        <ul v-show="isToggled" class="dropdown">
+                            <li class="disconnect" @click="authenticationStore.logout">
+                                Déconnexion
+                                <mdicon name="logout" />
+                            </li>
+                        </ul>
+                    </div>
+                </template>
+                <template v-else>
+                    <button @click="authenticationStore.login" class="primary login">
+                        Connexion/Inscription
+                        <mdicon name="login" />
+                    </button>
+                </template>
             </template>
             <template v-else>
-                <button @click="authenticationStore.login" class="primary login">
-                    Connexion/Inscription
-                    <mdicon name="login" />
-                </button>
+                <div class="sekeleton header" />
             </template>
         </div>
     </header>
@@ -57,7 +62,7 @@ import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 
 const authenticationStore = useAuthenticationStore();
-const {isAuthenticated, me} = storeToRefs(authenticationStore);
+const {isAuthenticated, me, isLoading} = storeToRefs(authenticationStore);
 
 const isToggled = ref<boolean>(false);
 
@@ -70,6 +75,23 @@ const formattedZipetteCoins = computed(() => {
 </script>
 
 <style scoped>
+@keyframes skeleton-loading {
+    0% {
+        background-color: hsl(200, 10%, 30%);
+    }
+    100% {
+        background-color: hsl(204, 8%, 13%);
+    }
+}
+
+div.sekeleton.header {
+    animation: skeleton-loading .8s linear infinite alternate;
+    width: 15em;
+    height: 3em;
+    border-radius: 100px;
+}
+
+
 header {
     padding: 2em 0;
     display: flex;

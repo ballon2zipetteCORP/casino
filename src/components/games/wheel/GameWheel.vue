@@ -38,7 +38,6 @@ const handleMessages = () => {
                 break;
             case "REWARD":
                 amountWon.value = message.data?.amount;
-                me.value!.zipetteCoins += amountWon.value;
                 break;
             case "BET_LOST":
                 hasLost.value = true;
@@ -47,12 +46,19 @@ const handleMessages = () => {
     });
 }
 
-const showResult = (number: number) => {
-    // TODO propper result
+const showResult = () => {
+    me.value!.zipetteCoins += amountWon.value;
     if(amountWon.value > 0) {
-        alert("Montant gagné: " + amountWon.value);
+        window.toast({
+            level: "INFO",
+            title: "Vous avez gagné " + amountWon.value + " ZPC !"
+        });
     } else if(hasLost.value) {
-        alert("Perdu !");
+        window.toast({
+            level: "INFO",
+            title: "Tu as perdu tous vos zipette coins...",
+            subtitle: "Grosse merde"
+        });
     }
     
     reset();
@@ -73,6 +79,7 @@ watch(me, value => {
 
 onBeforeUnmount(() => {
     useWebsocketStore().close();
+    tableRef?.value?.giveMoneyBack();
 })
 </script>
 

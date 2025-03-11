@@ -338,6 +338,10 @@ const allIn = () => {
     bet.value = me.value?.zipetteCoins!;
 }
 
+const giveMoneyBack = () => {
+    me.value!.zipetteCoins = me.value!.zipetteCoins + bet.value;
+}
+
 const resetUserSelection = () => {
     pickedChoice.value = "";
     bet.value = 0;
@@ -376,7 +380,7 @@ onMounted(() => {
     }
 });
 
-defineExpose({ resetUserSelection });
+defineExpose({ resetUserSelection, giveMoneyBack });
 </script>
 
 <style scoped>
