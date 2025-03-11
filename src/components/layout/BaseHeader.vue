@@ -25,8 +25,20 @@
 
                     <button class="primary">+</button>
                 </div>
-                <div @click="authenticationStore.logout" class="profile-picture">
-                    <img loading="lazy" src="/images/default-profile.jpg" alt="profile picture" />
+                <div class="profile-picture">
+                    <div @click="isToggled = !isToggled" class="picture">
+                        <img loading="lazy" src="/images/default-profile.jpg" alt="profile picture" />
+                        <span class="open">
+                            <mdicon name="chevron-down" />
+                        </span>
+                    </div>
+
+                    <ul v-show="isToggled" class="dropdown">
+                        <li class="disconnect" @click="authenticationStore.logout">
+                            Déconnexion
+                            <mdicon name="logout" />
+                        </li>
+                    </ul>
                 </div>
             </template>
             <template v-else>
@@ -42,10 +54,12 @@
 <script lang="ts" setup>
 import { useAuthenticationStore } from '@/stores/useAuthenticationStore';
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 const authenticationStore = useAuthenticationStore();
 const {isAuthenticated, me} = storeToRefs(authenticationStore);
+
+const isToggled = ref<boolean>(false);
 
 const formattedZipetteCoins = computed(() => {
     const money = me?.value?.zipetteCoins ?? 0;
@@ -130,7 +144,6 @@ div.money-field {
     }
 }
 div.profile-picture {
-    background-color: var(--gray-1);
     border-radius: 100px;
 
     display: flex;
@@ -139,10 +152,57 @@ div.profile-picture {
 
     width: fit-content;
 
-    &>img {
-        width: 4em;
-        border-radius: 100px;
-        border: 3px solid var( --primary);
+    position: relative;
+
+    &>.picture {
+        position: relative;
+        cursor: pointer;
+        
+        &>img {
+            width: 4em;
+            border-radius: 100px;
+            border: 3px solid var( --primary);
+
+        }
+        &>span.open {
+            position: absolute;
+            bottom: -.2em;
+            right: -.2em;
+            background-color: var(--gray-1);
+            padding: .2em .2em;
+            border-radius: 100px;
+        }
+    }
+
+    ul.dropdown {
+        position: absolute;
+        bottom: -3.3em;
+
+        background-color: var(--gray-1);
+        width: 10em;
+        text-align: center;
+        list-style: none;
+
+        border-radius: 10px;
+
+        &>li {
+            padding: .5em .8em;
+            cursor: pointer;
+
+            &:first-of-type {
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+            }
+            &:last-of-type {
+                border-bottom-right-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+
+            &.disconnect {
+                background-color: var(--red);
+                color: white;
+            }
+        }
     }
 }
 </style>

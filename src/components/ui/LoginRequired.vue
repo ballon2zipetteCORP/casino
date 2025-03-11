@@ -1,5 +1,5 @@
 <template>
-    <div v-show="!isAuthenticated" class="login">
+    <div v-show="!isLoading && !isAuthenticated" class="login">
         <div class="middle">
             <mdicon class="warn" :size="130" name="warning" />
             <h2>Vous devez être connecté pour jouer</h2>
@@ -18,7 +18,7 @@
 import { useAuthenticationStore } from '@/stores/useAuthenticationStore';
 import { storeToRefs } from 'pinia';
 
-const {isAuthenticated} = storeToRefs(useAuthenticationStore());
+const {isAuthenticated, isLoading} = storeToRefs(useAuthenticationStore());
 </script>
 
 <style scoped>

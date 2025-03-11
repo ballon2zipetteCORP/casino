@@ -4,6 +4,10 @@
         Retirer ma mise
         <mdicon name="close" />
     </button>
+    <button class="primary all-in" @click="allIn" :disabled="bet >= me?.zipetteCoins!">
+        All-In
+        <mdicon name="poker-chip" />
+    </button>
     <div>
         <label for="bet">Ma mise</label>
         <input 
@@ -330,6 +334,10 @@ const reset = () => {
     })
 }
 
+const allIn = () => {
+    bet.value = me.value?.zipetteCoins!;
+}
+
 const resetUserSelection = () => {
     pickedChoice.value = "";
     bet.value = 0;
@@ -461,6 +469,15 @@ header>button.primary {
     &:not(:disabled):hover {
         background-color: var(--red);
         color: white;
+    }
+
+    &.all-in {
+        border-color: var(--gray-3);
+        color: var(--gray-3);
+        &:not(:disabled):hover {
+            background-color: var(--gray-3);
+            color: var(--gray-1);
+        }
     }
 }
 </style>
