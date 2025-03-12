@@ -1,0 +1,2 @@
+- fix les bugs dans les todos
+- quand on retourne en arrière d'un jeu il faut remettre l'argent misé (car pas débité côté back)

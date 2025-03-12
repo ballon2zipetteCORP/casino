@@ -1,7 +1,11 @@
-import EuropeanRouletteView from '@/views/games/EuropeanRouletteView.vue'
+import { createRouter, createWebHistory } from 'vue-router'
+
 import HomeView from '@/views/HomeView.vue'
 import ShopView from '@/views/shop/ShopView.vue'
-import { createRouter, createWebHistory } from 'vue-router'
+
+import EuropeanRouletteView from '@/views/games/EuropeanRouletteView.vue'
+import CashView from '@/views/games/CashView.vue'
+import SlotMachineView from '@/views/games/SlotMachineView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,6 +28,16 @@ const router = createRouter({
           path: "european-roulette",
           name: 'games.european-roulette',
           component: EuropeanRouletteView
+        },
+        {
+          path: "slot-machine",
+          name: 'games.slot-machine',
+          component: SlotMachineView
+        },
+        {
+          path: "cash",
+          name: 'games.cash',
+          component: CashView
         }
       ]
     }
