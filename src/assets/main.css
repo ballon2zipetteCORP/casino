@@ -1,5 +1,6 @@
 :root {
     --primary: #5F6EFF;
+    --primary-2: #3847d2;
 
     --gray-1: #222A35;
     --gray-2: #444D5A;
@@ -71,6 +72,12 @@ button {
     &.primary {
         background-color: var(--primary);
         color: var(--white);
+
+        &:not(:disabled) {
+            &:hover {
+                background-color: var(--primary-2);
+            }
+        }
     }
 
     &:disabled {
