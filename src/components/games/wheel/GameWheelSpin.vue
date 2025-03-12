@@ -208,6 +208,7 @@ const spin = (selectedNumber: number) => {
     const duration = 5;
 
     const luckywheel = gsap.timeline();
+    // TODO: faudrait que quand ça relance la roue ça respin vraiment
     luckywheel.to("#spin-wheel", {
         duration,
         rotation: targetedAngle,
@@ -215,6 +216,7 @@ const spin = (selectedNumber: number) => {
         ease: "power4",
         onComplete: () => {
             emit("onResult", selectedNumber);
+            isSpinning.value = false;
         }
     });
     luckywheel.play();

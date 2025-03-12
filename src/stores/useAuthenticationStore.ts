@@ -34,10 +34,20 @@ export const useAuthenticationStore = defineStore('authenticationStore', () => {
         isLoading.value = true;
         try {
             if(isAuthenticated.value) return;
+            const storedToken = localStorage.getItem("kc_token");
+            const storedRefreshToken = localStorage.getItem("kc_refreshToken");
+
             const authenticated = await keycloak.init({ 
-                onLoad: 'check-sso', 
-                redirectUri: window.location.href.split("#").shift()
+                onLoad: 'check-sso',
+                token: storedToken!,
+                refreshToken: storedRefreshToken!,
+                silentCheckSsoFallback: false
             });
+            if (authenticated) {
+                console.log("[Keycloak] storing kc tokens");
+                localStorage.setItem("kc_token", keycloak.token!);
+                localStorage.setItem("kc_refreshToken", keycloak.refreshToken!);
+            }
             
             isAuthenticated.value = authenticated;
             token.value = keycloak.token;
