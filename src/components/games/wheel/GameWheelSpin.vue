@@ -228,7 +228,7 @@ onMounted(() => {
     setInterval(() => now.value = Date.now(), 1e3);
 })
 
-defineExpose({ spin: () => {} });
+defineExpose({ spin });
 
 </script>
 
