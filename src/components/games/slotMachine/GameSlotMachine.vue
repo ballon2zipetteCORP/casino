@@ -15,8 +15,8 @@
                 </div>
             </div>
         </div>
-        <button @click="startRolling" class="primary">
-            Faire tourner <span>(200 ZPC)</span>
+        <button :disabled="me?.zipetteCoins! < bet" @click="requestToScroll" class="primary">
+            Faire tourner <span>({{ bet }} ZPC)</span>
         </button>
     </BaseGame>
 </template>
@@ -24,50 +24,114 @@
 <script lang="ts" setup>
 import gsap from "gsap";
 import BaseGame from '../BaseGame.vue';
-import { ref } from "vue";
+
+import { ref, watch } from "vue";
+import { useWebsocketStore } from "@/stores/useWebsocketStore";
+import { storeToRefs } from "pinia";
+import { useAuthenticationStore } from "@/stores/useAuthenticationStore";
 
 const NB_SLOTS: number = 4;
 const IMAGE_PATH: Array<string> = ["logo","beer", "fire", "knife", "mechant", "no-play", "play"];
 
 const isSpinning = ref<boolean>(false);
 
-const startRolling = () => {
-    if(isSpinning.value) return;
+const {me} = storeToRefs(useAuthenticationStore());
+const bet = ref<number>(200);
+const hasWon = ref<boolean>(false);
+
+const requestToScroll = () => {
+    me.value!.zipetteCoins -= bet.value;
+    useWebsocketStore().send({
+        type: "USER_WANT_TO_PLAY",
+        data: { bet: bet.value }
+    });
+}
+
+const handleMessages = () => {
+    useWebsocketStore().addMessageListener(message => {
+        switch(message.type) {
+            case "START_TO_PLAY":
+                const numbers = message.data?.numbers;
+                hasWon.value = message.data?.hasWon;
+                startScrollingAnimation(numbers);
+                break;
+        }
+    })
+}
+
+const startScrollingAnimation = async (numbers: number[]) => {
+    if(isSpinning.value || !numbers.length) return;
     isSpinning.value = true;
     
     const DELAY = 50;
     const SLOT_HEIGHT = 9;
+    const totalHeight = IMAGE_PATH.length * SLOT_HEIGHT;
 
+    const promises = [];
     for(let i = 0; i < NB_SLOTS;i++) {
-        // TODO: pick from serve
-        const randomNumber = Math.floor(Math.random() * IMAGE_PATH.length);
-        setTimeout(() => {
-            const slotInner = `#slot-${i} .slot-inner`;
-
-            gsap.to(slotInner, {
-                y: `-${IMAGE_PATH.length * SLOT_HEIGHT}em`,
-                duration: .5,
-                repeat: -1,
-                ease: "linear"
-            });
-
+        promises.push(new Promise((resolve: any) => {
+            const randomNumber = numbers[i];
             setTimeout(() => {
-                gsap.killTweensOf(slotInner);
-                const padding = 2;
-                const finalPosition = (randomNumber * SLOT_HEIGHT) + padding;
-                
-                gsap.to(slotInner, {
-                    y: `-${finalPosition}em`,
-                    duration: 1,
-                    ease: "bounce.out",
+                const slotInner = `#slot-${i} .slot-inner`;
+
+                gsap.set(slotInner, { y: "0em" });
+
+                const scrollAnimation = gsap.to(slotInner, {
+                    y: `-${totalHeight}em`,
+                    duration: .5,
+                    repeat: -1,
+                    ease: "linear",
                     onComplete: () => {
-                        isSpinning.value = false;
+                        gsap.set(slotInner, { y: "0em" });
+                        scrollAnimation.restart();
                     }
                 });
-            }, (2 * 1e3) + (Math.random() * 2e3));
-        }, DELAY*i);
+
+                setTimeout(() => {
+                    scrollAnimation.kill();
+                    const padding = 2;
+                    const finalPosition = (randomNumber * SLOT_HEIGHT) + padding;
+                    
+                    gsap.to(slotInner, {
+                        y: `-${finalPosition}em`,
+                        duration: 1,
+                        ease: "bounce.out",
+                        onComplete: () => {
+                            resolve();
+                        }
+                    });
+                }, (2 * 1e3) + (Math.random() * 2e3));
+            }, DELAY*i);
+        }));
+    }
+    
+    await Promise.all(promises);
+    isSpinning.value = false;
+
+    if(hasWon.value) {
+        const amountWon = bet.value*2;
+
+        me.value!.zipetteCoins += amountWon;
+        window.toast({
+            level: "INFO",
+            title: "Vous avez gagné !",
+            subtitle: amountWon + " ZPC"
+        });
+    } else {
+        window.toast({
+            level: "INFO",
+            title: "Perdu...",
+            subtitle: "Looser!"
+        });
     }
 }
+
+watch(me, value => {
+    if(value) {
+        useWebsocketStore().connect("SLOT_MACHINE");
+        handleMessages();
+    }
+}, {immediate: true});
 </script>
 
 <style scoped>

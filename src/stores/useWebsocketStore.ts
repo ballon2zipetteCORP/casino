@@ -2,7 +2,7 @@ import {defineStore, storeToRefs} from "pinia";
 import {ref} from "vue";
 import { useAuthenticationStore } from "./useAuthenticationStore";
 
-export type TGame = "EUROPEAN_ROULETTE";
+export type TGame = "EUROPEAN_ROULETTE"|"SLOT_MACHINE";
 export interface IMessage {
     game: string;
     type: string;
