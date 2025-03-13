@@ -78,6 +78,7 @@ watch(me, value => {
 }, {immediate: true});
 
 onBeforeUnmount(() => {
+    // TODO: quand on revient en arrière, il faudrait remettre la somme misée si elle n'a pas été jouée
     useWebsocketStore().close();
 })
 </script>
