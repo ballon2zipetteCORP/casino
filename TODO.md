@@ -1,3 +1,3 @@
 - fix les bugs dans les todos
-- quand on retourne en arrière d'un jeu il faut remettre l'argent misé (car pas débité côté back)
+- quand on retourne en arrière d'un jeu il faut remettre l'argent misé (car pas débité côté back) (pour la roulette)
 - Répare l'UI de la roulette

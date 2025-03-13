@@ -21,7 +21,7 @@ interface IGame {
 
 const GAMES: Array<IGame> = [
     { name: "Roulette zipette", imageName: "roulette.png", pathName: "games.european-roulette" },
-    { name: "Machine à zipette", imageName: "slot-machine.png", pathName: "games.slot-machine" },
+    { name: "Machine à zipette coins", imageName: "slot-machine.png", pathName: "games.slot-machine" },
     { name: "Cash", imageName: "cash.png", pathName: "games.cash" }
 ]
 </script>

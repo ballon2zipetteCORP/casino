@@ -1,5 +1,4 @@
 <template>
-    <!-- TODO: skeleton loading -->
     <header>
         <nav>
             <ul>
@@ -24,7 +23,9 @@
                         </span>
                         <span class="money" v-html="formattedZipetteCoins"></span>
 
-                        <button class="primary">+</button>
+                        <button @click="isTokenGetInstructionsShown = true" class="primary">
+                            +
+                        </button>
                     </div>
                     <div class="profile-picture">
                         <div @click="isToggled = !isToggled" class="picture">
@@ -54,17 +55,21 @@
             </template>
         </div>
     </header>
+
+    <TokenGetInstructions @close="isTokenGetInstructionsShown = false" v-show="isTokenGetInstructionsShown" />
 </template>
 
 <script lang="ts" setup>
 import { useAuthenticationStore } from '@/stores/useAuthenticationStore';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
+import TokenGetInstructions from '../modals/TokenGetInstructions.vue';
 
 const authenticationStore = useAuthenticationStore();
 const {isAuthenticated, me, isLoading} = storeToRefs(authenticationStore);
 
 const isToggled = ref<boolean>(false);
+const isTokenGetInstructionsShown = ref<boolean>(false);
 
 const formattedZipetteCoins = computed(() => {
     const money = me?.value?.zipetteCoins ?? 0;
