@@ -3,7 +3,7 @@
         <ul>
             <li>
                 <span class="step-title">1</span>
-                <span class="instruction">Aller voir les CEO de ballon2zipette (1€ = 1000ZPC).</span>
+                <span class="instruction">Aller voir les CEO de ballon2zipette.</span>
             </li>
             <li>
                 <span class="step-title">2</span>

@@ -204,6 +204,7 @@ div.profile-picture {
     ul.dropdown {
         position: absolute;
         bottom: -3.3em;
+        z-index: 9;
 
         background-color: var(--gray-1);
         width: 10em;
