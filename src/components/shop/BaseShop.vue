@@ -1,4 +1,5 @@
 <template>
+    <LoginRequired />
     <div class="container">        
         <ul>
             <li @click="currentCategory = category.id" :class="{'active': category.id === currentCategory}" v-for="category in categories" :key="category.name">
@@ -25,6 +26,7 @@
 import { useAuthenticationStore } from '@/stores/useAuthenticationStore';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
+import LoginRequired from '../ui/LoginRequired.vue';
 
 interface IArticle {
     thumbnailPath: string;
@@ -39,7 +41,7 @@ const categories = ref<{ name: string; icon: string; id: string; }[]>([
 ]);
 
 const articles = ref<IArticle[]>([
-    { thumbnailPath: "stickers/basic_sticker.png", name: "Sticker B2Z Simple holographique", category: "stickers", price: 5000 }
+    { thumbnailPath: "stickers/basic-sticker.png", name: "Sticker B2Z Simple holographique", category: "stickers", price: 5000 }
 ]);
 
 const currentCategory = ref<string>(categories.value[0].id);

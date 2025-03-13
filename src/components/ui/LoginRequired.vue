@@ -2,7 +2,7 @@
     <div v-show="!isLoading && !isAuthenticated" class="login">
         <div class="middle">
             <mdicon class="warn" :size="130" name="warning" />
-            <h2>Vous devez être connecté pour jouer</h2>
+            <h2>Vous devez être connecté pour continuer</h2>
             <button class="primary" @click="useAuthenticationStore().login">
                 Se connecter
                 <mdicon name="login" />

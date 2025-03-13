@@ -10,6 +10,8 @@ useAuthenticationStore().authenticate();
 </script>
 
 <template>
+
+
   <base-toast />
   <base-header />
   <main>
