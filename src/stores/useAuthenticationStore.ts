@@ -24,11 +24,7 @@ export const useAuthenticationStore = defineStore('authenticationStore', () => {
 
     const _me = ref<IMe|undefined>(undefined);
     const me = computed({
-        get: () => {
-            const me = _me.value;
-            if(!me) return me;
-            return {...me, zipetteCoins: parseFloat(me?.zipetteCoins.toString())}
-        },
+        get: () => _me.value,
         set: (value: Partial<IMe>) => {
             _me.value = { ..._me.value, ...value } as IMe;
         }

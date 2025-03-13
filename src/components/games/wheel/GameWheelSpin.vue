@@ -166,6 +166,10 @@
     <h2>{{ nextSpinIn }}</h2>
 </div>
 </div>
+
+<button @click="() => spin(Math.floor(Math.random()*36))">
+    Debug
+</button>
 </template>
 
 <script lang="ts" setup>
@@ -182,6 +186,8 @@ const isSpinning = ref<boolean>(false);
 
 const props = defineProps<{ nextSpin: Date|null }>();
 const emit = defineEmits(["onResult"]);
+
+const currentRotation = ref<number>(0);
 
 const now = ref<number>(Date.now());
 
@@ -202,31 +208,29 @@ const spin = (selectedNumber: number) => {
 
     const index = numbers.indexOf(selectedNumber);
     const exactAngle = 360 - (index * degreesPerNumber);
-    const extraSpins = 5;
     
-    const targetedAngle = (extraSpins * 360) + exactAngle;
-    const duration = 5;
+    const extraRotation = 4 * 360;
+    const newRotation = currentRotation.value + extraRotation + exactAngle;
 
-    const luckywheel = gsap.timeline();
-    // TODO: faudrait que quand ça relance la roue ça respin vraiment
-    luckywheel.to("#spin-wheel", {
-        duration,
-        rotation: targetedAngle,
-        transformOrigin: '50% 50%',
-        ease: "power4",
+    const finalRotation = newRotation % 360;
+
+    gsap.to("#spin-wheel", {
+        rotation: newRotation,
+        duration: 4.5,
+        ease: "power4.out",
         onComplete: () => {
+            currentRotation.value = finalRotation;
             emit("onResult", selectedNumber);
             isSpinning.value = false;
         }
     });
-    luckywheel.play();
 }
 
 onMounted(() => {
     setInterval(() => now.value = Date.now(), 1e3);
 })
 
-defineExpose({ spin });
+defineExpose({ spin: () => {} });
 
 </script>
 
