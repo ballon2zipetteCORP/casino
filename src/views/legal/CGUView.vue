@@ -13,8 +13,10 @@
 
     Aucune somme d'argent réelle n'est engagée ou remportée.
     Il utilise le site à des fins de divertissement uniquement.
-    Il est de sa responsabilité de s'assurer que l'utilisation du site est légale dans son pays.
-    5. Limitation de Responsabilité
+    Il est de sa responsabilité de s'assurer que l'utilisation du site est légale dans son pays.</p>
+
+    <h2>5. Limitation de Responsabilité</h2>
+    <p>
     Le propriétaire du site ne peut être tenu responsable de toute mauvaise interprétation du site en tant que véritable casino. Aucune réclamation financière ne sera acceptée.
     </p>
 
