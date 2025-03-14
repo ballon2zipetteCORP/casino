@@ -48,6 +48,14 @@ body {
   font-family: "poppins-regular", sans-serif;
   background-color: var(--black);
   color: var(--white);
+  min-height: 100vh;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
 }
 
 h1,
