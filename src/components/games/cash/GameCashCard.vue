@@ -90,12 +90,16 @@ const PADDING = 20;
 const resizeCanvas = (canvas: HTMLCanvasElement) => {
   if (!canvas) return;
 
-  canvas.height = gameRef.value?.clientHeight
+  const newHeigt = gameRef.value?.clientHeight
     ? gameRef.value.clientHeight + PADDING
     : 0;
-  canvas.width = gameRef.value?.clientWidth
+  const newWidth = gameRef.value?.clientWidth
     ? gameRef.value.clientWidth + PADDING
     : 0;
+
+  if (canvas.height === newHeigt && canvas.width === newWidth) return;
+  canvas.height = newHeigt;
+  canvas.width = newWidth;
 
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
