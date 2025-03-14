@@ -15,19 +15,28 @@
         </p>
       </div>
 
-      <div v-for="(ticket, index) in ticketsList" :key="index">
+      <div v-for="ticket in ticketsList" :key="ticket.id">
         <GameCashCard
           ref="cashCardRefs"
           :winningNumbers="ticket.winningNumbers"
           :numero="ticket.numero"
         />
-        <button
-          class="primary check centered"
-          @click="getGain(index)"
-          :disabled="ticket.isChecked"
-        >
-          Check ticket
-        </button>
+        <div class="ticket-button">
+          <button
+            class="primary check"
+            @click="getGain(ticket.id)"
+            :disabled="ticket.isChecked"
+          >
+            Check ticket
+          </button>
+          <button
+            class="primary"
+            @click="deleteTicket(ticket.id)"
+            :disabled="!ticket.isChecked"
+          >
+            Delete ticket
+          </button>
+        </div>
       </div>
 
       <button
@@ -56,6 +65,7 @@ const { me } = storeToRefs(useAuthenticationStore());
 const cashCardRefs = ref<InstanceType<typeof GameCashCard>[]>([]);
 
 interface ITicket {
+  id: number;
   winningNumbers: number[];
   numero: { number: number; gain: number }[];
   winValue: number;
@@ -63,6 +73,7 @@ interface ITicket {
 }
 
 const ticketsList = ref<ITicket[]>([]);
+let ticketID = 0;
 
 const buyCashGame = () => {
   me.value!.zipetteCoins -= bet.value;
@@ -72,8 +83,9 @@ const buyCashGame = () => {
   });
 };
 
-const getGain = (index: number) => {
-  if (cashCardRefs.value.length > index) {
+const getGain = (id: number) => {
+  const index = ticketsList.value.findIndex((ticket) => ticket.id === id);
+  if (index !== -1) {
     const ticket = ticketsList.value[index];
     me.value!.zipetteCoins += ticket.winValue;
 
@@ -82,6 +94,13 @@ const getGain = (index: number) => {
       level: "INFO",
       title: `You won ${ticket.winValue} ZPC`,
     });
+  }
+};
+
+const deleteTicket = (id: number) => {
+  const index = ticketsList.value.findIndex((ticket) => ticket.id === id);
+  if (index !== -1) {
+    ticketsList.value.splice(index, 1);
   }
 };
 
@@ -94,7 +113,7 @@ const handleMessages = () => {
           title: "You bought a cash game",
         });
 
-        ticketsList.value.push(message.data);
+        ticketsList.value.push({ ...message.data, id: ticketID++ });
         break;
     }
   });
@@ -144,12 +163,17 @@ button.primary {
   &.check {
     border-color: var(--blue);
     color: var(--blue);
-    margin-top: 30px;
     &:not(:disabled):hover {
       background-color: var(--blue);
       color: var(--gray-1);
     }
   }
+}
+
+div.ticket-button {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
 }
 
 #rules {
