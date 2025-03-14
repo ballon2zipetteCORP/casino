@@ -2,8 +2,8 @@
   <div class="cash" ref="gameRef">
     <canvas
       ref="canvaGame"
-      @mousedown="handleMouseDown"
-      @mouseup="handleMouseUp"
+      @mousedown="startScratch"
+      @mouseup="stopScratch"
       @mousemove="handleMouseMove"
     ></canvas>
     <div class="game-grid">
@@ -33,29 +33,49 @@ const gameRef = ref<HTMLDivElement | null>(null);
 
 let isScratching = false;
 
-const handleMouseDown = () => {
+const getTouchPos = (canvas: HTMLCanvasElement, touch: Touch) => {
+  const rect = canvas.getBoundingClientRect();
+  return {
+    x: touch.clientX - rect.left,
+    y: touch.clientY - rect.top,
+  };
+};
+
+const startScratch = () => {
   isScratching = true;
 };
 
-const handleMouseUp = () => {
+const stopScratch = () => {
   isScratching = false;
 };
 
-const handleMouseMove = (event: MouseEvent) => {
-  if (!isScratching) return;
-
+const scratch = (x: number, y: number) => {
   const canvas = canvaGame.value;
-  if (!canvas) return;
+  if (!canvas || !isScratching) return;
 
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
   ctx.globalCompositeOperation = "destination-out";
-
   ctx.fillStyle = "green";
   ctx.beginPath();
-  ctx.arc(event.offsetX, event.offsetY, 10, 0, Math.PI * 2);
+  ctx.arc(x, y, 20, 0, Math.PI * 2);
   ctx.fill();
+};
+
+const handleMouseMove = (event: MouseEvent) => {
+  scratch(event.offsetX, event.offsetY);
+};
+
+const handleTouchMove = (event: TouchEvent) => {
+  event.preventDefault();
+
+  const canvas = canvaGame.value;
+  if (!canvas || event.touches.length === 0) return;
+
+  const touch = event.touches[0];
+  const pos = getTouchPos(canvas, touch);
+  scratch(pos.x, pos.y);
 };
 
 const PADDING = 20;
@@ -92,6 +112,16 @@ onMounted(() => {
       ctx.fillText("$", x, y);
     }
   }
+
+  canvas.addEventListener("touchstart", (event) => {
+    startScratch();
+    const touch = event.touches[0];
+    const pos = getTouchPos(canvas, touch);
+    scratch(pos.x, pos.y);
+  });
+
+  canvas.addEventListener("touchend", stopScratch);
+  canvas.addEventListener("touchmove", handleTouchMove);
 });
 </script>
 
