@@ -28,10 +28,15 @@ defineProps({
   winningNumbers: Array as PropType<number[]>,
   numero: Array as PropType<{ number: number; gain: number }[]>,
 });
+
 const canvaGame = ref<HTMLCanvasElement | null>(null);
 const gameRef = ref<HTMLDivElement | null>(null);
 
 let isScratching = false;
+
+const emit = defineEmits<{
+  (e: "scratch", percent: number): void;
+}>();
 
 const getTouchPos = (canvas: HTMLCanvasElement, touch: Touch) => {
   const rect = canvas.getBoundingClientRect();
@@ -61,6 +66,8 @@ const scratch = (x: number, y: number) => {
   ctx.beginPath();
   ctx.arc(x, y, 20, 0, Math.PI * 2);
   ctx.fill();
+
+  emit("scratch", getScratchPercentage());
 };
 
 const handleMouseMove = (event: MouseEvent) => {
@@ -79,8 +86,8 @@ const handleTouchMove = (event: TouchEvent) => {
 };
 
 const PADDING = 20;
-onMounted(() => {
-  const canvas = canvaGame.value;
+
+const resizeCanvas = (canvas: HTMLCanvasElement) => {
   if (!canvas) return;
 
   canvas.height = gameRef.value?.clientHeight
@@ -112,6 +119,36 @@ onMounted(() => {
       ctx.fillText("$", x, y);
     }
   }
+};
+
+const getScratchPercentage = (): number => {
+  const canvas = canvaGame.value;
+  if (!canvas) return 0;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return 0;
+
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const pixels = imageData.data;
+  let transparentPixels = 0;
+  let totalPixels = pixels.length / 4;
+
+  for (let i = 3; i < pixels.length; i += 4) {
+    if (pixels[i] === 0) {
+      transparentPixels++;
+    }
+  }
+
+  return (transparentPixels / totalPixels) * 100;
+};
+
+onMounted(() => {
+  const canvas = canvaGame.value;
+  if (!canvas) return;
+
+  resizeCanvas(canvas);
+
+  window.addEventListener("resize", () => resizeCanvas(canvas));
 
   canvas.addEventListener("touchstart", (event) => {
     startScratch();

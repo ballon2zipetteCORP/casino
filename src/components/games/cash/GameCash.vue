@@ -17,15 +17,15 @@
 
       <div v-for="ticket in ticketsList" :key="ticket.id">
         <GameCashCard
-          ref="cashCardRefs"
           :winningNumbers="ticket.winningNumbers"
           :numero="ticket.numero"
+          @scratch="handleScratch(ticket.id, $event)"
         />
         <div class="ticket-button">
           <button
             class="primary check"
             @click="getGain(ticket.id)"
-            :disabled="ticket.isChecked"
+            :disabled="ticket.isChecked || ticket.scratch < 75"
           >
             Check ticket
           </button>
@@ -51,6 +51,7 @@
 </template>
 
 <script setup lang="ts">
+import { useSound } from "@/composables/useSound";
 import { useAuthenticationStore } from "@/stores/useAuthenticationStore";
 import { useWebsocketStore } from "@/stores/useWebsocketStore";
 import { storeToRefs } from "pinia";
@@ -62,7 +63,8 @@ const bet = ref<number>(500);
 
 const { me } = storeToRefs(useAuthenticationStore());
 
-const cashCardRefs = ref<InstanceType<typeof GameCashCard>[]>([]);
+const { playSound: playWin } = useSound("/sounds/win.mp3");
+const { playSound: playLose } = useSound("/sounds/lose.mp3");
 
 interface ITicket {
   id: number;
@@ -70,6 +72,7 @@ interface ITicket {
   numero: { number: number; gain: number }[];
   winValue: number;
   isChecked: boolean;
+  scratch: number;
 }
 
 const ticketsList = ref<ITicket[]>([]);
@@ -87,13 +90,21 @@ const getGain = (id: number) => {
   const index = ticketsList.value.findIndex((ticket) => ticket.id === id);
   if (index !== -1) {
     const ticket = ticketsList.value[index];
-    me.value!.zipetteCoins += ticket.winValue;
-
-    ticket.isChecked = true;
+    if (ticket.isChecked) return;
+    let title = "You lost";
+    if (ticket.winValue === 0) {
+      playLose();
+      title = "You lost";
+    } else {
+      playWin();
+      title = `You won ${ticket.winValue} ZPC`;
+      me.value!.zipetteCoins += ticket.winValue;
+    }
     window.toast({
       level: "INFO",
-      title: `You won ${ticket.winValue} ZPC`,
+      title,
     });
+    ticket.isChecked = true;
   }
 };
 
@@ -113,10 +124,20 @@ const handleMessages = () => {
           title: "You bought a cash game",
         });
 
-        ticketsList.value.push({ ...message.data, id: ticketID++ });
+        ticketsList.value.push({ ...message.data, id: ticketID++, scratch: 0 });
         break;
     }
   });
+};
+
+const handleScratch = (id: number, percent: number) => {
+  const index = ticketsList.value.findIndex((ticket) => ticket.id === id);
+  if (index !== -1) {
+    ticketsList.value[index].scratch = percent;
+    if (percent > 80) {
+      getGain(id);
+    }
+  }
 };
 
 watch(
