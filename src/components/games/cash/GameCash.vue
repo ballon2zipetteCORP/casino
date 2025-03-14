@@ -33,7 +33,7 @@
       <button
         class="primary buy centered"
         @click="buyCashGame"
-        :disabled="me!.zipetteCoins < bet"
+        :disabled="me?.zipetteCoins! < bet"
       >
         Buy a cash for {{ bet }} ZPC
       </button>
@@ -95,7 +95,6 @@ const handleMessages = () => {
         });
 
         ticketsList.value.push(message.data);
-        console.log(ticketsList.value);
         break;
     }
   });
