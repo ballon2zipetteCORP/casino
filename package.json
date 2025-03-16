@@ -11,6 +11,7 @@
     "type-check": "vue-tsc --build"
   },
   "dependencies": {
+    "@mdi/js": "^7.4.47",
     "babylonjs": "^7.51.0",
     "babylonjs-loaders": "^7.51.0",
     "gsap": "^3.12.7",

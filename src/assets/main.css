@@ -1,87 +1,102 @@
 :root {
-    --primary: #5F6EFF;
-    --primary-2: #3847d2;
+  --primary: #5f6eff;
+  --primary-2: #3847d2;
 
-    --gray-1: #222A35;
-    --gray-2: #444D5A;
-    --gray-3: #d5dde9;
-    --black: #14171F;
+  --gray-1: #222a35;
+  --gray-2: #444d5a;
+  --gray-3: #d5dde9;
+  --black: #14171f;
 
-    --white: #ffff;
+  --white: #ffff;
 
-    --red: #ff4949;
-    --orange: #c98828;
-    --green: #1ca71c;
+  --red: #ff4949;
+  --orange: #c98828;
+  --green: #1ca71c;
+  --blue: #1c8db9;
 
-    --shadow-settings-1: 0 0 5.4px #3d3e41cf;
+  --shadow-settings-1: 0 0 5.4px #3d3e41cf;
 }
 
-*, *::after, *::before {
-    outline: none;
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+*,
+*::after,
+*::before {
+  outline: none;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 @font-face {
-    font-family: "poppins-bold";
-    src: url(/fonts/poppins-bold.ttf);
+  font-family: "poppins-bold";
+  src: url(/fonts/poppins-bold.ttf);
 }
 @font-face {
-    font-family: "poppins-light";
-    src: url(/fonts/poppins-light.ttf);
+  font-family: "poppins-light";
+  src: url(/fonts/poppins-light.ttf);
 }
 @font-face {
-    font-family: "poppins-medium";
-    src: url(/fonts/poppins-medium.ttf);
+  font-family: "poppins-medium";
+  src: url(/fonts/poppins-medium.ttf);
 }
 @font-face {
-    font-family: "poppins-regular";
-    src: url(/fonts/poppins-regular.ttf);
+  font-family: "poppins-regular";
+  src: url(/fonts/poppins-regular.ttf);
 }
 
-html, body {
-    font-family: "poppins-regular", sans-serif;
-    background-color: var(--black);
-    color: var(--white);
+html,
+body {
+  font-family: "poppins-regular", sans-serif;
+  background-color: var(--black);
+  color: var(--white);
+  min-height: 100vh;
 }
 
-h1, h2, h3, h4 {
-    font-weight: normal;
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: normal;
 }
 
 button {
-    border: unset;
-    background-color: transparent;
-    color: var(--primary);
-    /*box-shadow: 0 0 4px #8a91dc;*/
-    
-    border-radius: 10px;
-    font-size: 1.1em;
-    padding: .5em 1em;
-    width: fit-content;
+  border: unset;
+  background-color: transparent;
+  color: var(--primary);
+  /*box-shadow: 0 0 4px #8a91dc;*/
 
-    transition: all .5s ease;
+  border-radius: 10px;
+  font-size: 1.1em;
+  padding: 0.5em 1em;
+  width: fit-content;
 
-    cursor: pointer;
+  transition: all 0.5s ease;
 
-    display: block;
+  cursor: pointer;
 
-    font-family: "poppins-regular",sans-serif;
+  display: block;
 
-    &.primary {
-        background-color: var(--primary);
-        color: var(--white);
+  font-family: "poppins-regular", sans-serif;
 
-        &:not(:disabled) {
-            &:hover {
-                background-color: var(--primary-2);
-            }
-        }
+  &.primary {
+    background-color: var(--primary);
+    color: var(--white);
+
+    &:not(:disabled) {
+      &:hover {
+        background-color: var(--primary-2);
+      }
     }
+  }
 
-    &:disabled {
-        opacity: .5;
-        cursor: unset;
-    }
+  &:disabled {
+    opacity: 0.5;
+    cursor: unset;
+  }
 }
