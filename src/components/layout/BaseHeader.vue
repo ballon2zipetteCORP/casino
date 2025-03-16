@@ -235,7 +235,7 @@ div.profile-picture {
 }
 @media screen and (max-width: 593px) {
     header {
-        flex-direction: column;
+        flex-direction: column-reverse;
         gap: 1em;
     }
 }
