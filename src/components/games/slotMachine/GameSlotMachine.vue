@@ -1,32 +1,32 @@
 <template>
     <BaseGame>
-        <h2>Machine à zipette</h2>
-        <p>Si vous avez 4 symboles identiques vous remporter le double du gain misé.</p>
+      <h2>Machine à zipette</h2>
+      <p>Si vous avez 4 symboles identiques vous remporter le double du gain misé.</p>
 
-    <div id="slot-machine">
-      <div
-        class="slot"
-        :id="`slot-${index}`"
-        v-for="(_, index) in new Array(NB_SLOTS).fill('')"
-        :key="index"
-      >
-        <div class="slot-inner">
-          <img
-            v-for="(icon, jindex) in [...IMAGE_PATH, ...IMAGE_PATH]"
-            :key="icon + index + jindex"
-            :alt="icon"
-            :src="`/images/games/slotMachine/${icon}.png`"
-          />
+      <div id="slot-machine">
+        <div
+          class="slot"
+          :id="`slot-${index}`"
+          v-for="(_, index) in new Array(NB_SLOTS).fill('')"
+          :key="index"
+        >
+          <div class="slot-inner">
+            <img
+              v-for="(icon, jindex) in [...IMAGE_PATH, ...IMAGE_PATH]"
+              :key="icon + index + jindex"
+              :alt="icon"
+              :src="`/images/games/slotMachine/${icon}.png`"
+            />
+          </div>
         </div>
       </div>
-    </div>
-    <button
-      :disabled="me?.zipetteCoins! < bet"
-      @click="requestToScroll"
-      class="primary"
-    >
-      Faire tourner <span>({{ bet }} ZPC)</span>
-    </button>
+      <button
+        :disabled="me?.zipetteCoins! < bet"
+        @click="requestToScroll"
+        class="primary"
+      >
+        Faire tourner <span>({{ bet }} ZPC)</span>
+      </button>
   </BaseGame>
 </template>
 
@@ -59,7 +59,7 @@ const requestToScroll = () => {
 const handleMessages = () => {
   useWebsocketStore().addMessageListener((message) => {
     switch (message.type) {
-      case "GIVE_CASH":
+      case "START_TO_PLAY":
         const numbers = message.data?.numbers;
         hasWon.value = message.data?.hasWon;
         startScrollingAnimation(numbers);
