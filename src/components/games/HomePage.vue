@@ -112,4 +112,64 @@ section article {
         width: 15em;
     }
 }
+
+@media screen and (max-width: 1490px) {
+    section {
+        width: unset;
+        margin: 2em 5em;
+        margin-top: 4em;
+
+        article:not(:first-of-type) {
+            img {
+                width: 13em !important;
+            }
+        }
+    }
+}
+@media screen and (max-width: 1115px) {
+    section {
+        article:not(:first-of-type) {
+            img {
+                width: 8em !important;
+            }
+        }
+    }
+}
+@media screen and (max-width: 1002px) {
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: 4em;
+
+        article {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            div {
+                position: unset !important;
+            }
+
+            img {
+                position: unset !important;
+                width: 17em !important;
+            }
+        }
+    }
+}
+@media screen and (max-width: 723px) {
+    section {
+        margin-left: .5em;
+        margin-right: .5em;
+    }
+}
+@media screen and (max-width: 532px) {
+    section {
+        article {
+            img {
+                width: 10em !important;
+            }
+        }
+    }
+}
 </style>

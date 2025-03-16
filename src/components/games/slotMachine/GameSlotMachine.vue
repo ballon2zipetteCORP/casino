@@ -1,15 +1,7 @@
 <template>
-<<<<<<< HEAD
     <BaseGame>
         <h2>Machine à zipette</h2>
         <p>Si vous avez 4 symboles identiques vous remporter le double du gain misé.</p>
-=======
-  <BaseGame>
-    <h2>Machine à zipette</h2>
-    <p>
-      Si vous avez 4 symboles indiques vous remporter le double du gain misé.
-    </p>
->>>>>>> fd7f4915d81876b69a36b571a2026e6b89d6832f
 
     <div id="slot-machine">
       <div
@@ -48,19 +40,7 @@ import { storeToRefs } from "pinia";
 import { ref, watch } from "vue";
 
 const NB_SLOTS: number = 4;
-<<<<<<< HEAD
 const IMAGE_PATH: Array<string> = ["logo","beer", "fire", "knife"];
-=======
-const IMAGE_PATH: Array<string> = [
-  "logo",
-  "beer",
-  "fire",
-  "knife",
-  "mechant",
-  "no-play",
-  "play",
-];
->>>>>>> fd7f4915d81876b69a36b571a2026e6b89d6832f
 
 const isSpinning = ref<boolean>(false);
 

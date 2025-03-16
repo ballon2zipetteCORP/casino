@@ -45,6 +45,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+
 div.modal[role="dialog"] {
     background-color: rgba(0, 0, 0, .6);
     position: fixed;
@@ -62,6 +63,7 @@ div.modal[role="dialog"] {
         animation: modal-close .5s forwards;
     }
 }
+
 div.modal[role="dialog"]>div.center {
     background-color: var(--gray-1);
     width: 32em;
@@ -73,6 +75,12 @@ div.modal[role="dialog"]>div.center {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+@media screen and (max-width: 522px) {
+    div.modal[role="dialog"]>div.center {
+        width: 27em;
+    }
+}
+
 div.modal[role="dialog"]>div.center>header {
     display: flex;
     justify-content: space-between;
