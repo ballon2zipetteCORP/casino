@@ -1,7 +1,7 @@
 <template>
     <BaseGame>
         <h2>Machine à zipette</h2>
-        <p>Si vous avez 4 symboles indiques vous remporter le double du gain misé.</p>
+        <p>Si vous avez 4 symboles identiques vous remporter le double du gain misé.</p>
 
         <div id="slot-machine">
             <div class="slot" :id="`slot-${index}`" v-for="(_, index) in new Array(NB_SLOTS).fill('')" :key="index">
@@ -31,7 +31,7 @@ import { storeToRefs } from "pinia";
 import { useAuthenticationStore } from "@/stores/useAuthenticationStore";
 
 const NB_SLOTS: number = 4;
-const IMAGE_PATH: Array<string> = ["logo","beer", "fire", "knife", "mechant", "no-play", "play"];
+const IMAGE_PATH: Array<string> = ["logo","beer", "fire", "knife"];
 
 const isSpinning = ref<boolean>(false);
 

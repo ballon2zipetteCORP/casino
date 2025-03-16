@@ -88,6 +88,6 @@ div.center {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3em;
+    gap: 2em;
 }
 </style>
