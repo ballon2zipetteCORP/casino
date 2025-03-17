@@ -120,7 +120,6 @@
     <h3>Prochain tour</h3>
     <h2>{{ nextSpinIn }}</h2>
 </div>
-
 </div>
 </template>
 
@@ -139,8 +138,6 @@ const isSpinning = ref<boolean>(false);
 const props = defineProps<{ nextSpin: Date|null }>();
 const emit = defineEmits(["onResult"]);
 
-const currentRotation = ref<number>(0);
-
 const now = ref<number>(Date.now());
 
 const nextSpinIn = computed(() => {
@@ -154,30 +151,24 @@ const nextSpinIn = computed(() => {
     return '';
 });
 
-const spin = (selectedNumber: number) => {
+const spin = async (selectedNumber: number) => {
     if (isSpinning.value) return;
     isSpinning.value = true;
 
     const index = numbers.indexOf(selectedNumber);
     const exactAngle = 360 - (index * degreesPerNumber);
-    
-    const extraRotation = 5 * 360;
-    const newRotation = currentRotation.value + extraRotation + exactAngle;
+    const extraSpin = 5*360;
+    const newRotation = extraSpin + exactAngle;
 
-    const finalRotation = newRotation % 360;
-
-    // TODO: quand on relance la roue il faut que ça la relance totalement
-    // clean l'animation
-    gsap.to("#spin-wheel", {
-        rotation: newRotation,
+    gsap.fromTo("#spin-wheel", {rotation: newRotation}, {
+        rotation: exactAngle,
         duration: 4,
-        ease: "power4.out",
+        ease: "power1.out",
         onComplete: () => {
-            currentRotation.value = finalRotation;
-            emit("onResult", selectedNumber);
             isSpinning.value = false;
         }
-    });
+    })
+
 }
 
 onMounted(() => {
@@ -189,21 +180,19 @@ defineExpose({ spin });
 </script>
 
 <style scoped>
-svg {
-    transition: transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
-}
-
 #spin-wheel {
     width: 40em;
 }
 
 div.parent {
     position: relative;
+    height: 100vh;
+    margin-top: -12em;/*magouille */
 }
 
 svg.result {
     position: absolute;
-    top: 47.4%;
+    top: 55.2%;
     left: 50%;
 
     transform: translate(-50%, -50%);
@@ -213,7 +202,7 @@ svg.result {
 
 div.next-spin-in {
     position: absolute;
-    top: 50%;
+    top: 57%;
     left: 50%;
     transform: translate(-50%, -50%);
 
