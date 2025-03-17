@@ -4,10 +4,9 @@ import GoldenStickersMarketingCampaign from "./goldenSticker/GoldenStickersMarke
 const useMarketing = () => {
 
     const getCurrentCampaign = <T = BaseMarketingCampaign>(): T|null => {
-        return null;
-        // return  new GoldenStickersMarketingCampaign({
-        //    campaignName: "B2Z Golden sticker"
-        //}) as T
+        return  new GoldenStickersMarketingCampaign({
+            campaignName: "B2Z Golden sticker"
+        }) as T
     }
 
     return {
