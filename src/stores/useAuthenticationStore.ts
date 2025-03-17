@@ -16,6 +16,7 @@ interface IMe {
   email: string;
   given_name: string;
   family_name: string;
+  upn: string;
   groups: string[];
 }
 
@@ -46,6 +47,7 @@ export const useAuthenticationStore = defineStore("authenticationStore", () => {
         token: storedToken!,
         refreshToken: storedRefreshToken!,
         silentCheckSsoFallback: false,
+        enableLogging: true,
       });
       if (authenticated) {
         console.log("[Keycloak] storing kc tokens");
@@ -53,12 +55,16 @@ export const useAuthenticationStore = defineStore("authenticationStore", () => {
         localStorage.setItem("kc_refreshToken", keycloak.refreshToken!);
       }
 
-      keycloak.onTokenExpired = async () => {
-        await keycloak.updateToken();
-        token.value = keycloak.token;
-        tokenParsed.value = keycloak.tokenParsed;
-      }
-
+      setInterval(async () => {
+        if (keycloak.isTokenExpired(10)) {
+          console.log("[Keycloak] token expired, refreshing token");
+          await keycloak.updateToken();
+          token.value = keycloak.token;
+          tokenParsed.value = keycloak.tokenParsed;
+          localStorage.setItem("kc_token", keycloak.token!);
+          localStorage.setItem("kc_refreshToken", keycloak.refreshToken!);
+        }
+      }, 10000);
 
       isAuthenticated.value = authenticated;
       token.value = keycloak.token;

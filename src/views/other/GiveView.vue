@@ -6,7 +6,13 @@
     <h2>Distributeur de Zipette Coins</h2>
     <div>
       <label for="userID">ID Utilisateur</label>
-      <input type="text" id="userID" name="userID" required v-model="id" />
+      <input
+        type="text"
+        id="userID"
+        name="userID"
+        required
+        v-model="username"
+      />
     </div>
     <div>
       <label for="amount">Quantité</label>
@@ -18,7 +24,9 @@
         v-model="amount"
       />
     </div>
-    <button type="submit" :disabled="isLoading">Ajouter</button>
+    <button type="submit" :disabled="isLoading || isLoadingUser">
+      Ajouter
+    </button>
   </form>
 </template>
 
@@ -41,26 +49,47 @@ const { handleRequest, isLoading } = useAPIRequest<{
   method: "POST",
 });
 
-const id = ref<string>("");
+const {
+  data: user,
+  error,
+  handleRequest: handleGetUser,
+  isLoading: isLoadingUser,
+} = useAPIRequest<{ id: string }>({
+  method: "GET",
+});
+
+const username = ref<string>("");
 const amount = ref<number>(0);
 
 const handleSubmit = async () => {
-  await handleRequest({
-    body: { id: id.value, amount: amount.value },
-    endpoint: "/give/" + id.value,
+  await handleGetUser({
+    endpoint: "/user?username=" + username.value,
   });
 
-  if (me.value && me.value.id === id.value) {
+  if (error.value) {
+    return alert(error.value.message);
+  }
+
+  if (!user.value?.id) {
+    return alert("Utilisateur introuvable");
+  }
+
+  await handleRequest({
+    body: { amount: amount.value },
+    endpoint: "/give/" + user.value.id,
+  });
+
+  if (me.value && me.value.id === user.value.id) {
     me.value.zipetteCoins += amount.value;
   }
 };
 
 watchEffect(() => {
   if (isLoadingMe.value) return;
-  if (!isAuthenticated.value || !me.value!.groups.includes("/staff")) {
+  if (!isAuthenticated.value || !me.value?.groups.includes("/staff")) {
     return router.push({ name: "home" });
   }
-  id.value = me.value?.id!;
+  username.value = me.value!.upn;
 });
 </script>
 
