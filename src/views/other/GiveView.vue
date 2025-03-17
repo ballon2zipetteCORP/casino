@@ -1,5 +1,8 @@
 <template>
-  <form @submit.prevent="handleSubmit">
+  <form
+    @submit.prevent="handleSubmit"
+    v-if="!isLoading && isAuthenticated && me?.groups.includes('/staff')"
+  >
     <h2>Distributeur de Zipette Coins</h2>
     <div>
       <label for="userID">ID Utilisateur</label>
@@ -26,7 +29,11 @@ import { useAuthenticationStore } from "@/stores/useAuthenticationStore";
 import { storeToRefs } from "pinia";
 import { ref, watchEffect } from "vue";
 
-const { me } = storeToRefs(useAuthenticationStore());
+const {
+  me,
+  isLoading: isLoadingMe,
+  isAuthenticated,
+} = storeToRefs(useAuthenticationStore());
 
 const { handleRequest, isLoading } = useAPIRequest<{
   url: string;
@@ -49,7 +56,8 @@ const handleSubmit = async () => {
 };
 
 watchEffect(() => {
-  if (me.value && !me.value.groups.includes("/staff")) {
+  if (isLoadingMe.value) return;
+  if (!isAuthenticated.value || !me.value!.groups.includes("/staff")) {
     return router.push({ name: "home" });
   }
   id.value = me.value?.id!;
