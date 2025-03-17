@@ -37,10 +37,10 @@
                 </div>
             </template>
             <template v-else-if="error">
-                <mdicon class="icon error" name="close-circle" />
+                <mdicon size="120" class="icon error" name="close-circle" />
 
                 <h2 class="title">Impossible de confirmer la commande</h2>
-                <h3>{{ error.message }}</h3>
+                <h3>Voici l'erreur attaché à ce message: {{ error.message }}</h3>
 
                 <div class="actions">
                     <button @click="closeModal" class="primary close-modal">

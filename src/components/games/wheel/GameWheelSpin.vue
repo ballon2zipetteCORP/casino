@@ -166,6 +166,8 @@ const spin = (selectedNumber: number) => {
 
     const finalRotation = newRotation % 360;
 
+    // TODO: quand on relance la roue il faut que ça la relance totalement
+    // clean l'animation
     gsap.to("#spin-wheel", {
         rotation: newRotation,
         duration: 4,

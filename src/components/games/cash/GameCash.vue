@@ -6,12 +6,8 @@
       </div>
 
       <div id="rules">
-        <h2>Rules</h2>
         <p>
-          Scratch game : scratch the ticket to reveal the numbers. On the left,
-          you’ll see the numbers present on the ticket. On the right, you’ll
-          find the winning numbers. If a winning number is present on the
-          ticket, you win the amount shown on the ticket.
+          Grattez le ticket pour révéler les numéros. À gauche, vous verrez les numéros présents sur le ticket. À droite, vous trouverez les numéros gagnants. Si un numéro gagnant est présent sur le ticket, vous gagnez le montant indiqué sur le ticket.
         </p>
       </div>
 
@@ -27,14 +23,14 @@
             @click="getGain(ticket.id)"
             :disabled="ticket.isChecked || ticket.scratch < 75"
           >
-            Check ticket
+            Vérifier
           </button>
           <button
             class="primary"
             @click="deleteTicket(ticket.id)"
             :disabled="!ticket.isChecked"
           >
-            Delete ticket
+            Supprimer
           </button>
         </div>
       </div>
@@ -44,7 +40,7 @@
         @click="buyCashGame"
         :disabled="me?.zipetteCoins! < bet"
       >
-        Buy a cash for {{ bet }} ZPC
+        Acheter ({{ bet }} ZPC)
       </button>
     </div>
   </BaseGame>
@@ -91,13 +87,13 @@ const getGain = (id: number) => {
   if (index !== -1) {
     const ticket = ticketsList.value[index];
     if (ticket.isChecked) return;
-    let title = "You lost";
+    let title = "Vous avez perdu";
     if (ticket.winValue === 0) {
       playLose();
-      title = "You lost";
+      title = "Vous avez perdu";
     } else {
       playWin();
-      title = `You won ${ticket.winValue} ZPC`;
+      title = `Vous avez gagné ${ticket.winValue} ZPC`;
       me.value!.zipetteCoins += ticket.winValue;
     }
     window.toast({
@@ -121,7 +117,7 @@ const handleMessages = () => {
       case "GIVE_CASH":
         window.toast({
           level: "INFO",
-          title: "You bought a cash game",
+          title: "Vous avez acheté un cash",
         });
 
         ticketsList.value.push({ ...message.data, id: ticketID++, scratch: 0 });
