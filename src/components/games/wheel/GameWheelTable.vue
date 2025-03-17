@@ -232,6 +232,7 @@
 import { useAuthenticationStore } from '@/stores/useAuthenticationStore';
 import { useWebsocketStore } from '@/stores/useWebsocketStore';
 import { storeToRefs } from 'pinia';
+import { onBeforeUnmount } from 'vue';
 import { computed, onMounted, ref } from 'vue';
 
 /** CONSTANTS */
@@ -379,6 +380,13 @@ onMounted(() => {
 });
 
 defineExpose({ resetUserSelection });
+
+onBeforeUnmount(() => {
+    if(me.value && pickedChoiceElements.value.length) {
+        me.value.zipetteCoins += bet.value;
+        resetUserSelection();
+    }
+});
 </script>
 
 <style scoped>
