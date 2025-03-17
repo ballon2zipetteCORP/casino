@@ -12,6 +12,10 @@ const keycloak = new Keycloak({
 interface IMe {
   id: string;
   zipetteCoins: number;
+  email_verified: boolean;
+  email: string;
+  given_name: string;
+  family_name: string;
   groups: string[];
 }
 

@@ -5,7 +5,7 @@ const useMarketing = () => {
 
     const getCurrentCampaign = <T = BaseMarketingCampaign>(): T|null => {
         return null;
-        // new GoldenStickersMarketingCampaign({
+        // return  new GoldenStickersMarketingCampaign({
         //    campaignName: "B2Z Golden sticker"
         //}) as T
     }

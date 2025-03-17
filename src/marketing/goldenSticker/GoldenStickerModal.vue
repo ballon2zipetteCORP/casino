@@ -23,7 +23,7 @@ const {me} = storeToRefs(useAuthenticationStore());
 <template>
     <BaseModal v-show="!hasSeen" @close="closeModal" title="En ce moment...">
         <div class="center">
-            <img alt="golden sticker" src="/images/shop/stickers/golden-sticker.png" />
+            <img alt="golden sticker" src="https://s3.matteogaillard.fr/api/v1/buckets/casino2zipette/objects/download?preview=true&prefix=golden-sticker.png&version_id=null" />
             <h3>Achetez des stickers dans la boutique et tentez de gagner le sticker d’or.</h3>
             <p>L'heureux(se) gagnant(e) remportera une soirée avec toute l'équipe B2Z, <span>tous frais payés</span>. </p>
 

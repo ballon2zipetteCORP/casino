@@ -8,31 +8,47 @@
             </li>
         </ul>
 
-        <section>
-            <article v-for="article in currentArticles" :key="article.name">
-                <img alt="simple sticker" :src="`/images/shop/${article.thumbnailPath}`" />
-                <h3>{{ article.name }}</h3>
-                <h4>{{ article.price }} ZPC</h4>
-                <button :disabled="me?.zipetteCoins! < article.price" class="primary">
-                    Commander
-                    <mdicon name="cart" />
-                </button>
-            </article>
-        </section>
+        <template v-if="!isLoading">
+            <section>
+                <article v-for="article in data?.products" :key="article.id">
+                    <img :alt="article.name" :src="article.imageURL" />
+                    <h3>{{ article.name }}</h3>
+                    <h4>{{ article.price }} ZPC</h4>
+                    <button @click="() => openModal(article)" :disabled="me?.zipetteCoins! < article.price" class="primary">
+                        Commander
+                        <mdicon name="cart" />
+                    </button>
+                </article>
+            </section>
+        </template>
+        <template v-else-if="!isLoading && error">
+            {{ error.message }}
+        </template>
     </div>
+
+    <ShopOrderConfirmationModal 
+        :product="selectedProduct" 
+        v-show="confirmOrderModalOpened" 
+        @close=" confirmOrderModalOpened = false" 
+        ref="shopConfirmationRef"
+    />
 </template>
 
 <script lang="ts" setup>
 import { useAuthenticationStore } from '@/stores/useAuthenticationStore';
 import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
-import LoginRequired from '../ui/LoginRequired.vue';
+import { ref } from 'vue';
 
-interface IArticle {
-    thumbnailPath: string;
+import LoginRequired from '../ui/LoginRequired.vue';
+import useAPIRequest from '@/composables/useAPIRequest';
+import ShopOrderConfirmationModal from './ShopOrderConfirmationModal.vue';
+
+export interface IProduct {
+    id: string;
+    imageURL: string;
     name: string;
     price: number;
-    category: string;
+    categoryId: string;
 }
 
 const {me} = storeToRefs(useAuthenticationStore());
@@ -40,15 +56,22 @@ const categories = ref<{ name: string; icon: string; id: string; }[]>([
     { id: "stickers", name: "Stickers", icon: "sticker" }
 ]);
 
-const articles = ref<IArticle[]>([
-    { thumbnailPath: "stickers/basic-sticker.png", name: "Sticker B2Z Simple holographique", category: "stickers", price: 5000 }
-]);
-
+const shopConfirmationRef = ref<typeof ShopOrderConfirmationModal|undefined>(undefined);
 const currentCategory = ref<string>(categories.value[0].id);
-const currentArticles = computed(() => {
-    return articles.value
-        .filter(article => article.category === currentCategory.value);
-})
+
+const confirmOrderModalOpened = ref<boolean>(false);
+const selectedProduct = ref<IProduct|null>(null);
+
+const {data, error, isLoading} = useAPIRequest<{products: IProduct[]}>({
+    immediate: true,
+    endpoint: "/products/"+currentCategory.value
+});
+
+const openModal = (product: IProduct) => {
+    shopConfirmationRef.value?.reset();
+    selectedProduct.value = product;
+    confirmOrderModalOpened.value = true;
+}
 </script>
 
 <style scoped>
