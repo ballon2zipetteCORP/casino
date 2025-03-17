@@ -103,6 +103,9 @@ header {
     align-items: center;
     gap: 1em;
     justify-content: space-around;
+
+    position: relative;
+    z-index: 99;
 }
 header nav ul {
     display: flex;
