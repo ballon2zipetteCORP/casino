@@ -53,6 +53,13 @@ export const useAuthenticationStore = defineStore("authenticationStore", () => {
         localStorage.setItem("kc_refreshToken", keycloak.refreshToken!);
       }
 
+      keycloak.onTokenExpired = async () => {
+        await keycloak.updateToken();
+        token.value = keycloak.token;
+        tokenParsed.value = keycloak.tokenParsed;
+      }
+
+
       isAuthenticated.value = authenticated;
       token.value = keycloak.token;
       tokenParsed.value = keycloak.tokenParsed;
