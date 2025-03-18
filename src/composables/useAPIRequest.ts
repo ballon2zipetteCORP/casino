@@ -9,6 +9,7 @@ interface IPreRequestParams {
   endpoint?: string;
   immediate?: boolean;
   body?: Record<string, unknown>;
+  baseUrl?: string;
 }
 
 interface IRequestParams {
@@ -21,6 +22,7 @@ export default function useAPIRequest<T>({
   method = "GET",
   endpoint = "/",
   body = {},
+  baseUrl = import.meta.env.VITE_API_URL,
 }: IPreRequestParams = {}) {
   const isLoading = ref<boolean>(false);
   const data = ref<T | null>(null);
@@ -33,7 +35,7 @@ export default function useAPIRequest<T>({
       url += "/";
     }
     url += endpoint;
-    return import.meta.env.VITE_API_URL + url;
+    return baseUrl + url;
   }
 
   function reset() {
