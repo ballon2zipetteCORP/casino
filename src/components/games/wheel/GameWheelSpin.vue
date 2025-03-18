@@ -186,13 +186,11 @@ defineExpose({ spin });
 
 div.parent {
     position: relative;
-    height: 100vh;
-    margin-top: -12em;/*magouille */
 }
 
 svg.result {
     position: absolute;
-    top: 55.2%;
+    top: 47.4%;
     left: 50%;
 
     transform: translate(-50%, -50%);
@@ -202,7 +200,7 @@ svg.result {
 
 div.next-spin-in {
     position: absolute;
-    top: 57%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 
