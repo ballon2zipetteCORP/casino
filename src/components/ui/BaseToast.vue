@@ -33,7 +33,7 @@ const toastRef = ref<HTMLDivElement|undefined>(undefined)
 
 const close = () => {
     toastRef?.value?.classList?.add("close");
-    timeoutId.value = setTimeout(() => {
+    setTimeout(() => {
         toastRef?.value?.classList?.remove("close");
         toast.value = null;
     }, 1e3/2);
@@ -54,7 +54,7 @@ window.toast = (params: IToastParams) => {
 div.toast {
     z-index: 9999999;
     position: fixed;
-    bottom: 1em;
+    top: 2em;
     right: 0;
 
     background-color: var(--gray-1);
