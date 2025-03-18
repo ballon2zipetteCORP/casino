@@ -21,7 +21,7 @@
         </div>
       </div>
       <button
-        :disabled="me?.zipetteCoins! < bet"
+        :disabled="isSpinning || me?.zipetteCoins! < bet"
         @click="requestToScroll"
         class="primary"
       >
@@ -73,7 +73,7 @@ const startScrollingAnimation = async (numbers: number[]) => {
   isSpinning.value = true;
 
   const DELAY = 50;
-  const SLOT_HEIGHT = 9;
+  const SLOT_HEIGHT = 10;
   const totalHeight = IMAGE_PATH.length * SLOT_HEIGHT;
 
   const promises = [];
@@ -100,7 +100,7 @@ const startScrollingAnimation = async (numbers: number[]) => {
           setTimeout(() => {
             scrollAnimation.kill();
             const padding = 2;
-            const finalPosition = randomNumber * SLOT_HEIGHT + padding;
+            const finalPosition = randomNumber * SLOT_HEIGHT;
 
             gsap.to(slotInner, {
               y: `-${finalPosition}em`,
@@ -110,6 +110,7 @@ const startScrollingAnimation = async (numbers: number[]) => {
                 resolve();
               },
             });
+            resolve();
           }, 2 * 1e3 + Math.random() * 2e3);
         }, DELAY * i);
       })
@@ -166,7 +167,7 @@ button.primary {
     font-family: "poppins-medium", sans-serif;
   }
 
-  &:hover {
+  &:focus {
     transform: translateY(0);
     box-shadow: unset;
   }
@@ -204,6 +205,7 @@ p {
   & img {
     border-right: 5px solid var(--gray-1);
     width: 10em;
+    height: 10em;
     user-select: none;
 
     &:first-of-type {
