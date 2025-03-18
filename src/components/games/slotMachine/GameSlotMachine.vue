@@ -206,6 +206,7 @@ p {
     border-right: 5px solid var(--gray-1);
     width: 10em;
     height: 10em;
+    object-fit: cover;
     user-select: none;
 
     &:first-of-type {
