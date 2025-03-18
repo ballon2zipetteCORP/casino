@@ -122,8 +122,12 @@ div.container>section>article {
     background-color: var(--gray-1);
     border-radius: 30px;
     padding: 1em;
+    flex-basis: 25em;
 
     text-align: center;
+    position: relative;
+
+    padding-bottom: 4em;
 
     &>img {
         display: block;
@@ -147,8 +151,11 @@ div.container>section>article {
     }
 
     &>button {
-        width: 100%;
+        width: 80%;
         border-radius: 100px;
+
+        position: absolute;
+        bottom: 1em;
     }
 }
 </style>
