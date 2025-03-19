@@ -11,6 +11,7 @@ import CGUView from "@/views/legal/CGUView.vue";
 import MentionsLegalesView from "@/views/legal/MentionsLegalesView.vue";
 import PolitiqueDeConfidentialiteView from "@/views/legal/PolitiqueDeConfidentialiteView.vue";
 import GiveView from "@/views/other/GiveView.vue";
+import MinesweeperView from "@/views/games/MinesweeperView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,6 +65,11 @@ const router = createRouter({
           path: "cash",
           name: "games.cash",
           component: CashView,
+        },
+        {
+          path: "mine-sweeper",
+          name: "games.mine-sweeper",
+          component: MinesweeperView,
         },
       ],
     },

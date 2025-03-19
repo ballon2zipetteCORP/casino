@@ -1,5 +1,5 @@
 <template>
-    <BaseGame>
+    <BaseGame :landscape-required="true">
         <div class="center">
             <game-wheel-spin :next-spin="nextSpin" @on-result="showResult" ref="spinRef" />
             <game-wheel-table ref="tableRef" />

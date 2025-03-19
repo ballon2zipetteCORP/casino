@@ -1,0 +1,2 @@
+- []: daily reward
+- []: Responsive de la roulette en mobile

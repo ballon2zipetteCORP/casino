@@ -1,14 +1,23 @@
 import { ref } from "vue";
 
+interface IPlaySoundParams {
+  volume?: number;
+}
+
 export function useSound(soundPath: string) {
   const audio = new Audio(soundPath);
   const isPlaying = ref(false);
 
   audio.load();
 
-  const playSound = () => {
+  const playSound = (params: IPlaySoundParams) => {
     if (!isPlaying.value) {
       isPlaying.value = true;
+
+      if(params.volume) {
+        audio.volume = params.volume;
+      }
+      
       audio.currentTime = 0;
       audio
         .play()

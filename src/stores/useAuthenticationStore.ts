@@ -18,6 +18,7 @@ interface IMe {
   family_name: string;
   upn: string;
   groups: string[];
+  nextRewardAt: Date;
 }
 
 export const useAuthenticationStore = defineStore("authenticationStore", () => {
@@ -47,7 +48,7 @@ export const useAuthenticationStore = defineStore("authenticationStore", () => {
         token: storedToken!,
         refreshToken: storedRefreshToken!,
         silentCheckSsoFallback: false,
-        enableLogging: true,
+        enableLogging: import.meta.env.NODE_ENV === "development",
       });
       if (authenticated) {
         console.log("[Keycloak] storing kc tokens");
