@@ -2,6 +2,7 @@
     <template v-if="!hasOrientedToLandscape">
         <div class="orientation">
             <div class="center">
+                <router-link :to="{name: 'home'}">Me ramener à l'accueil</router-link>
                 <mdicon class="cellphone-icon" name="cellphone" :size="120" />
                 <h2>Orientez votre téléphone en mode paysage pour jouer</h2>
                 <h3>Pour une meilleure experience jeu sur téléphone nous vous demandons d'orienter votre téléphone</h3>
@@ -26,6 +27,12 @@ const hasOrientedToLandscape = computed(() => {
 </script>
 
 <style scoped>
+a {
+    color: var(--gray-3);
+    text-align: center;
+    display: block;
+    font-size: 1.3em;
+}
 div.orientation {
     position: fixed;
     top: 0;
