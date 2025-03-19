@@ -99,6 +99,8 @@ export const useAuthenticationStore = defineStore("authenticationStore", () => {
 
   const logout = async () => {
     await keycloak.logout();
+    localStorage.removeItem("kc_token");
+    localStorage.removeItem("kc_refreshToken");
   };
 
   return {
