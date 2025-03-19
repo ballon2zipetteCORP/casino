@@ -114,6 +114,7 @@ div.container>ul {
 div.container>section {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;    
     gap: 1em;
 
     margin-top: 2em;
@@ -122,7 +123,7 @@ div.container>section>article {
     background-color: var(--gray-1);
     border-radius: 30px;
     padding: 1em;
-    flex-basis: 25em;
+    flex-basis: 18em;
 
     text-align: center;
     position: relative;
@@ -151,7 +152,7 @@ div.container>section>article {
     }
 
     &>button {
-        width: 80%;
+        width: 90%;
         border-radius: 100px;
 
         position: absolute;
