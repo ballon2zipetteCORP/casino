@@ -10,11 +10,11 @@ export function useSound(soundPath: string) {
 
   audio.load();
 
-  const playSound = (params: IPlaySoundParams) => {
+  const playSound = (params?: IPlaySoundParams) => {
     if (!isPlaying.value) {
       isPlaying.value = true;
 
-      if(params.volume) {
+      if(params && params.volume) {
         audio.volume = params.volume;
       }
       

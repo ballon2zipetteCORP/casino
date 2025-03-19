@@ -2,7 +2,7 @@
   <BaseGame>
     <div class="center">
       <div>
-        <h1>Cash Game</h1>
+        <h1>Cash</h1>
       </div>
 
       <div id="rules">
