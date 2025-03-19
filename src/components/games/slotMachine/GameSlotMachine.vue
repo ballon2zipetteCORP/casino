@@ -222,6 +222,7 @@ p {
 @media screen and (max-width: 678px) {
   div.slot-inner img {
     width: 7em !important;
+    height: 7em !important;
   }
   #slot-machine {
     height: 10em !important;
@@ -230,6 +231,7 @@ p {
 @media screen and (max-width: 477px) {
   div.slot-inner img {
     width: 5em !important;
+    height: 5em !important;
   }
   #slot-machine {
     height: 8em !important;

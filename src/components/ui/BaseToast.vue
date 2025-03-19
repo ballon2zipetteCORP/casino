@@ -100,6 +100,12 @@ div.toast {
     }
 }
 
+@media screen and (max-width: 538px) {
+    div.toast {
+        width: 20em;
+    }
+}
+
 @keyframes toast-appear {
     from {
         right: -300em;
