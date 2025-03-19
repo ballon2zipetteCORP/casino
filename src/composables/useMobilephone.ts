@@ -1,6 +1,8 @@
-import { computed, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 
 const useMobilePhone = () => {
+
+    const angle = ref<number>(screen.orientation.angle);
 
     const isOnMobilePhone = ref<boolean>(
         /BlackBerry/i.test(navigator.userAgent) ||
@@ -14,9 +16,20 @@ const useMobilePhone = () => {
     );
 
     const orientation = computed<"LANDSCAPE"|"PORTRAIT">(() => {
-        const angle = screen.orientation.angle;
-        return (angle === 90||angle === -90) ? "LANDSCAPE" : "PORTRAIT"; 
+        return (angle.value === 90|| angle.value === -90) ? "LANDSCAPE" : "PORTRAIT"; 
     });
+
+    const updateAngle = () => () => {
+        angle.value = screen.orientation.angle;
+    }
+
+    onBeforeUnmount(() => {
+        window.removeEventListener("deviceorientation", updateAngle);
+    })
+
+    onMounted(() => {
+        window.addEventListener("deviceorientation", updateAngle);
+    })
     
     return {orientation, isOnMobilePhone};
 

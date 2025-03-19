@@ -13,14 +13,13 @@
 
         <div class="footer">
             <button>Jouer</button>
-            <div>
-                <!-- BET -->
-            </div>
+            <UserBetInput />
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
+import UserBetInput from '@/components/ui/UserBetInput.vue';
 import { ref } from 'vue';
 
 const NB_COL = 6;

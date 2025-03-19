@@ -8,18 +8,7 @@
         All-In
         <mdicon name="poker-chip" />
     </button>
-    <div>
-        <label for="bet">Ma mise</label>
-        <input 
-            :disabled="!!pickedChoice" 
-            id="bet"
-            :step=".5" 
-            type="number" 
-            v-model="bet" 
-            @input="verifyNumberInputEntry"
-        />
-        <span class="devise" :class="{'disabled': !!pickedChoice}">ZPC</span>
-    </div>
+    <UserBetInput v-model="bet" :disabled="!!pickedChoice" />
 </header>
 
 <svg width="1063" height="332" viewBox="0 0 1063 332" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -229,6 +218,7 @@
 </template>
 
 <script lang="ts" setup>
+import UserBetInput from '@/components/ui/UserBetInput.vue';
 import { useAuthenticationStore } from '@/stores/useAuthenticationStore';
 import { useWebsocketStore } from '@/stores/useWebsocketStore';
 import { storeToRefs } from 'pinia';
