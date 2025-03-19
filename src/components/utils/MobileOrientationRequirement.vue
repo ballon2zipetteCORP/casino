@@ -8,7 +8,9 @@
             </div>
         </div>
     </template>
-    <slot />
+    <template v-else>
+        <slot />
+    </template>
 </template>
 
 <script lang="ts" setup>
