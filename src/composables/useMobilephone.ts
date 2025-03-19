@@ -15,7 +15,7 @@ const useMobilePhone = () => {
 
     const orientation = computed<"LANDSCAPE"|"PORTRAIT">(() => {
         const angle = screen.orientation.angle;
-        return angle === 270 ? "LANDSCAPE" : "PORTRAIT"; 
+        return angle === 90 ? "LANDSCAPE" : "PORTRAIT"; 
     });
     
     return {orientation, isOnMobilePhone};
