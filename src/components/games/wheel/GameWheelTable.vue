@@ -371,7 +371,17 @@ onMounted(() => {
 
 defineExpose({ resetUserSelection });
 
+onMounted(() => {
+    window.addEventListener("beforeunload", () => {
+        reset();
+    });
+})
+
 onBeforeUnmount(() => {
+    window.removeEventListener("beforeunload", () => {
+        reset();
+    });
+    
     if(me.value && pickedChoiceElements.value.length) {
         me.value.zipetteCoins += bet.value;
         resetUserSelection();
