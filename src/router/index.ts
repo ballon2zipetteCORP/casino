@@ -7,11 +7,12 @@ import CashView from "@/views/games/CashView.vue";
 import EuropeanRouletteView from "@/views/games/EuropeanRouletteView.vue";
 import SlotMachineView from "@/views/games/SlotMachineView.vue";
 
+import MinesweeperView from "@/views/games/MinesweeperView.vue";
 import CGUView from "@/views/legal/CGUView.vue";
 import MentionsLegalesView from "@/views/legal/MentionsLegalesView.vue";
 import PolitiqueDeConfidentialiteView from "@/views/legal/PolitiqueDeConfidentialiteView.vue";
 import GiveView from "@/views/other/GiveView.vue";
-import MinesweeperView from "@/views/games/MinesweeperView.vue";
+import LeaderboardView from "@/views/other/LeaderboardView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -77,6 +78,11 @@ const router = createRouter({
       path: "/give",
       name: "give",
       component: GiveView,
+    },
+    {
+      path: "/leaderboard",
+      name: "leaderboard",
+      component: LeaderboardView,
     },
   ],
 });

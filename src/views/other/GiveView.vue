@@ -33,6 +33,12 @@
         v-model="amount"
       />
     </div>
+
+    <div>
+      <label for="amount">Tricheur</label>
+      <input type="checkbox" name="cheat" id="cheat" v-model="cheat" />
+    </div>
+
     <button type="submit" :disabled="isLoading || isLoadingUser">
       Ajouter
     </button>
@@ -79,6 +85,7 @@ const {
 
 const username = ref<string>("");
 const amount = ref<number>(0);
+const cheat = ref<boolean>(false);
 const usernameIsFocused = ref<boolean>(false);
 const autocomplete = ref<HTMLDivElement | null>(null);
 
@@ -101,8 +108,9 @@ const handleSubmit = async () => {
     return alert("Utilisateur introuvable");
   }
 
+  console.log(cheat.value);
   await handleRequest({
-    body: { amount: amount.value },
+    body: { amount: amount.value, cheat: cheat.value },
     endpoint: "/give/" + user.value.id,
   });
 
