@@ -4,15 +4,24 @@
     v-if="!isLoading && isAuthenticated && me?.groups.includes('/staff')"
   >
     <h2>Distributeur de Zipette Coins</h2>
-    <div>
-      <label for="userID">ID Utilisateur</label>
+    <div class="parent">
+      <label for="userID">Nom de l'utilisateur</label>
       <input
         type="text"
         id="userID"
         name="userID"
         required
         v-model="username"
+        @focus="() => (usernameIsFocused = true)"
+        @focusout="handleUnfocus"
       />
+      <div class="autocomplete" v-if="usernameIsFocused" ref="autocomplete">
+        <span
+          v-for="user in filteredUsers"
+          @click="() => (username = user.username)"
+          >{{ user.username }}</span
+        >
+      </div>
     </div>
     <div>
       <label for="amount">Quantité</label>
@@ -35,7 +44,7 @@ import useAPIRequest from "@/composables/useAPIRequest";
 import router from "@/router";
 import { useAuthenticationStore } from "@/stores/useAuthenticationStore";
 import { storeToRefs } from "pinia";
-import { ref, watchEffect } from "vue";
+import { computed, ref, watch } from "vue";
 
 const {
   me,
@@ -58,8 +67,26 @@ const {
   method: "GET",
 });
 
+const {
+  data: users,
+  error: usersError,
+  handleRequest: handleGetUsers,
+  isLoading: isLoadingUsers,
+} = useAPIRequest<{ id: string; username: string }[]>({
+  endpoint: "/users",
+  method: "GET",
+});
+
 const username = ref<string>("");
 const amount = ref<number>(0);
+const usernameIsFocused = ref<boolean>(false);
+const autocomplete = ref<HTMLDivElement | null>(null);
+
+const handleUnfocus = (e: FocusEvent) => {
+  setTimeout(() => {
+    usernameIsFocused.value = false;
+  }, 100);
+};
 
 const handleSubmit = async () => {
   await handleGetUser({
@@ -84,12 +111,30 @@ const handleSubmit = async () => {
   }
 };
 
-watchEffect(() => {
-  if (isLoadingMe.value) return;
-  if (!isAuthenticated.value || !me.value?.groups.includes("/staff")) {
-    return router.push({ name: "home" });
-  }
-  username.value = me.value!.upn;
+watch(
+  [me, isLoadingMe],
+  ([value, loading]) => {
+    if (loading) return;
+
+    if (!isAuthenticated.value || !value?.groups.includes("/staff")) {
+      return router.push({ name: "home" });
+    }
+    handleGetUsers();
+    username.value = value!.upn;
+  },
+  { immediate: true }
+);
+
+const filteredUsers = computed(() => {
+  return users.value
+    ? users.value
+        .filter(
+          (u) =>
+            u.username.toLowerCase().includes(username.value.toLowerCase()) &&
+            u.username !== username.value
+        )
+        .slice(0, 10)
+    : [];
 });
 </script>
 
@@ -116,6 +161,25 @@ form {
     border: 1px solid var(--color-primary);
     width: 80%;
     max-width: 300px;
+  }
+
+  .parent {
+    position: relative;
+  }
+
+  .autocomplete {
+    width: 80%;
+    max-width: 300px;
+    position: absolute;
+
+    top: 100%;
+    span {
+      width: 100%;
+      padding: 0.5em;
+      border: 1px solid var(--gray-3);
+      background: var(--gray-1);
+      cursor: pointer;
+    }
   }
 }
 </style>
