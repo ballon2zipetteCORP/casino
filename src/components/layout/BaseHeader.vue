@@ -12,6 +12,11 @@
                         <mdicon name="cart" /> Boutique
                     </router-link>
                 </li>
+                <li>
+                  <router-link :to="{name: 'leaderboard'}">
+                    <mdicon name="trophy" /> Classement
+                  </router-link>
+                </li>
             </ul>
         </nav>
         <div class="left">
