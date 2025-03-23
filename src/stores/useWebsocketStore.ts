@@ -2,7 +2,7 @@ import { defineStore, storeToRefs } from "pinia";
 import { ref } from "vue";
 import { useAuthenticationStore } from "./useAuthenticationStore";
 
-export type TGame = "EUROPEAN_ROULETTE" | "SLOT_MACHINE" | "CASH_GAME";
+export type TGame = "EUROPEAN_ROULETTE" | "SLOT_MACHINE" | "CASH_GAME" | "MINE_SWEEPER" | "AVIATOR_CRASH";
 export interface IMessage {
   game: string;
   type: string;
@@ -17,18 +17,18 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
   const keepAliveInterval = ref<number | null>(null);
 
   // time until the next keep alive check
-  const KEEP_ALIVE_CHECK = 3e4;
-  const KEEP_ALIVE_TIMEOUT = 3e4;
+  const KEEP_ALIVE_CHECK = 10 * 1e3;
+  const KEEP_ALIVE_TIMEOUT = 10 * 1e3;
 
   const actualGame = ref<TGame | null>(null);
 
   const connect = (game: TGame) => {
-    const { me } = storeToRefs(useAuthenticationStore());
+    const { me, token } = storeToRefs(useAuthenticationStore());
 
     identityId.value = me.value!.id;
     actualGame.value = game;
     websocket.value = new WebSocket(
-      `${import.meta.env.VITE_WSS}/${identityId.value}/${game}`
+      `${import.meta.env.VITE_WSS}/${encodeURI(token.value!)}/${game}`
     );
 
     websocket.value.onopen = () => {

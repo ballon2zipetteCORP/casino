@@ -20,13 +20,23 @@
           </div>
         </div>
       </div>
-      <button
-        :disabled="isSpinning || me?.zipetteCoins! < bet"
-        @click="requestToScroll"
-        class="primary"
-      >
-        Faire tourner <span>({{ bet }} ZPC)</span>
-      </button>
+      
+      <div class="bet-area">
+        <UserBetInput v-model="bet" />
+        <button
+          :disabled="!startAutoSpinning && (isSpinning || me?.zipetteCoins! < bet)"
+          @click="requestToScroll"
+          class="primary"
+        >
+          {{ startAutoSpinning ? "Stopper" : "Faire tourner" }}
+        </button>
+        <!-- <div class="auto-spin">
+          <label for="auto-spin">
+            Auto spin
+          </label>
+          <input v-model="autoSpin" type="checkbox" id="auto-spin" />
+        </div> -->
+      </div>
   </BaseGame>
 </template>
 
@@ -38,23 +48,52 @@ import { useAuthenticationStore } from "@/stores/useAuthenticationStore";
 import { useWebsocketStore } from "@/stores/useWebsocketStore";
 import { storeToRefs } from "pinia";
 import { ref, watch } from "vue";
+import UserBetInput from "@/components/ui/UserBetInput.vue";
 
 const NB_SLOTS: number = 4;
 const IMAGE_PATH: Array<string> = ["logo","beer", "fire", "knife"];
 
 const isSpinning = ref<boolean>(false);
 
+const autoSpin = ref<boolean>(false);
+const startAutoSpinning = ref<boolean>(false);
+
 const { me } = storeToRefs(useAuthenticationStore());
 const bet = ref<number>(200);
 const hasWon = ref<boolean>(false);
 
-const requestToScroll = () => {
+const requestToScroll = async () => {
+  if(autoSpin.value) {
+    stopAutoSpin();
+  }
+
+  if(autoSpin.value) {
+    startAutoSpinning.value = true;
+    while(autoSpin.value) {
+      if(me?.value!.zipetteCoins! < bet.value) {
+        stopAutoSpin();
+        return;
+      }
+      if(!isSpinning.value) {
+        request();
+      }
+    }
+    startAutoSpinning.value = false;
+  } else {
+    request();
+  }
+};
+
+const request = () => {
   me.value!.zipetteCoins -= bet.value;
   useWebsocketStore().send({
     type: "USER_WANT_TO_PLAY",
     data: { bet: bet.value },
   });
-};
+}
+const stopAutoSpin = () => {
+  autoSpin.value = false;
+}
 
 const handleMessages = () => {
   useWebsocketStore().addMessageListener((message) => {
@@ -99,7 +138,6 @@ const startScrollingAnimation = async (numbers: number[]) => {
 
           setTimeout(() => {
             scrollAnimation.kill();
-            const padding = 2;
             const finalPosition = randomNumber * SLOT_HEIGHT;
 
             gsap.to(slotInner, {
@@ -118,7 +156,6 @@ const startScrollingAnimation = async (numbers: number[]) => {
   }
 
   await Promise.all(promises);
-  isSpinning.value = false;
 
   if (hasWon.value) {
     const amountWon = bet.value * 2;
@@ -136,6 +173,7 @@ const startScrollingAnimation = async (numbers: number[]) => {
       subtitle: "Looser!",
     });
   }
+  isSpinning.value = false;
 };
 
 watch(
@@ -151,8 +189,13 @@ watch(
 </script>
 
 <style scoped>
+div.bet-area {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  gap: 1em;
+}
 button.primary {
-  margin: auto;
   font-size: 1.5em;
 
   box-shadow: 0px 8px 0 #3945b9;

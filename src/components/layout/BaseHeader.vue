@@ -21,6 +21,10 @@
         </nav>
         <div class="left">
             <template v-if="!isLoading">
+                <!-- <span class="connected-players">
+                    <mdicon name="circle" />
+                    {{ metrics?.connectedPlayers ?? 0 }} joueur(s) en ligne
+                </span> -->
                 <template v-if="isAuthenticated">
                     <div class="money-field">
                         <span class="devise">
@@ -69,9 +73,11 @@ import { useAuthenticationStore } from '@/stores/useAuthenticationStore';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import TokenGetInstructions from '../modals/TokenGetInstructions.vue';
+import useMetrics from '@/composables/useMetrics';
 
 const authenticationStore = useAuthenticationStore();
 const {isAuthenticated, me, isLoading} = storeToRefs(authenticationStore);
+//const {isLoading: isMetricsLoading, data: metrics} = useMetrics();
 
 const isToggled = ref<boolean>(false);
 const isTokenGetInstructionsShown = ref<boolean>(false);
@@ -127,6 +133,9 @@ header nav ul {
             color: var(--primary);
         }
     }
+}
+span.connected-players {
+    color: var(--green);
 }
 button.primary.login {
     display: flex;
@@ -241,7 +250,7 @@ div.profile-picture {
         }
     }
 }
-@media screen and (max-width: 593px) {
+@media screen and (max-width: 905px) {
     header {
         flex-direction: column-reverse;
         gap: 1em;

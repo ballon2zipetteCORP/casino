@@ -18,7 +18,10 @@ interface IMe {
   family_name: string;
   upn: string;
   groups: string[];
-  nextRewardAt: Date;
+
+  nextRewardAt: Date|null;
+  nextHourlyRewardAt: Date|null;
+  nextWeeklyRewardAt: Date|null;
 }
 
 export const useAuthenticationStore = defineStore("authenticationStore", () => {

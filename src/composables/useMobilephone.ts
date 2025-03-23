@@ -1,4 +1,4 @@
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 const useMobilePhone = () => {
 
@@ -23,6 +23,8 @@ const useMobilePhone = () => {
 
     onMounted(() => {
         window.addEventListener("resize", updateAngle);
+        window.addEventListener("deviceorientation", updateAngle);
+        setInterval(() => updateAngle(), 1e2);
     })
     
     return {orientation, isOnMobilePhone};

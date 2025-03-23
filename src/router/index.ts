@@ -13,6 +13,7 @@ import MentionsLegalesView from "@/views/legal/MentionsLegalesView.vue";
 import PolitiqueDeConfidentialiteView from "@/views/legal/PolitiqueDeConfidentialiteView.vue";
 import GiveView from "@/views/other/GiveView.vue";
 import LeaderboardView from "@/views/other/LeaderboardView.vue";
+import { useWebsocketStore } from "@/stores/useWebsocketStore";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

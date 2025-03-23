@@ -15,10 +15,10 @@
 </template>
 
 <script lang="ts" setup>
-import useMobilePhoneOrientation from '@/composables/useMobilephone';
+import useMobilePhone from '@/composables/useMobilephone';
 import { computed } from 'vue';
 
-const {orientation, isOnMobilePhone} = useMobilePhoneOrientation();
+const {orientation, isOnMobilePhone} = useMobilePhone();
 
 const hasOrientedToLandscape = computed(() => {
     if(!isOnMobilePhone.value) return true;

@@ -135,7 +135,7 @@ const spinRef = ref<HTMLElement|null>(null);
 
 const isSpinning = ref<boolean>(false);
 
-const props = defineProps<{ nextSpin: Date|null }>();
+const props = defineProps<{ nextSpin: Date|null; actualPlayersConnected: number }>();
 const emit = defineEmits(["onResult"]);
 
 const now = ref<number>(Date.now());
@@ -180,6 +180,7 @@ defineExpose({ spin });
 </script>
 
 <style scoped>
+
 #spin-wheel {
     width: 40em;
 }

@@ -1,7 +1,10 @@
 <template>
   <div class="leaderboard">
     <div class="content" v-for="(user, index) in data">
-      <span class="place">{{ index + 1 }}</span>
+      <!--<img alt="first" src="/images/leaderboard/first.png" />-->
+      <span class="place">
+        {{ index + 1 }}
+      </span>
       <div>
         <span class="username">{{ user.displayName }}</span>
         <span class="zipette"
@@ -15,7 +18,7 @@
 <script lang="ts" setup>
 import useAPIRequest from "@/composables/useAPIRequest";
 
-const { data, error, handleRequest, isLoading } = useAPIRequest<
+const { data } = useAPIRequest<
   { id: string; displayName: string; zipetteCoins: number }[]
 >({
   endpoint: "/leaderboard?limit=10",
@@ -52,6 +55,14 @@ const { data, error, handleRequest, isLoading } = useAPIRequest<
     }
   }
 
+  div:first-of-type {
+    display: flex;
+    align-items: center;
+  }
+
+  img {
+    width: 6em;
+  }
   .place {
     font-size: 2em;
     display: flex;

@@ -1,7 +1,7 @@
 <template>
     <BaseGame :landscape-required="true">
         <div class="center">
-            <game-wheel-spin :next-spin="nextSpin" @on-result="showResult" ref="spinRef" />
+            <game-wheel-spin :actual-players-connected="actualPlayersConnected" :next-spin="nextSpin" @on-result="showResult" ref="spinRef" />
             <game-wheel-table ref="tableRef" />
         </div>
     </BaseGame>
@@ -22,7 +22,9 @@ const { me } = storeToRefs(useAuthenticationStore());
 
 const spinRef = ref<typeof GameWheelSpin|null>(null);
 const tableRef = ref<typeof GameWheelTable|null>(null);
+
 const nextSpin = ref<Date|null>(null);
+const actualPlayersConnected = ref<number>(0);
 
 const amountWon = ref<number>(0);
 const hasLost = ref<boolean>(false);
@@ -32,6 +34,7 @@ const handleMessages = () => {
         switch(message.type) {
             case "INFORMATION":
                 nextSpin.value = new Date(message.data?.nextSpin);
+                actualPlayersConnected.value = parseInt(message.data?.actualPlayersConnected);
                 break;
             case "START_SPINNING":
                 spinRef?.value?.spin(message.data?.number);
