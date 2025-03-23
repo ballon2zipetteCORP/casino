@@ -14,7 +14,6 @@
 
 <script lang="ts" setup>
 import useAPIRequest from "@/composables/useAPIRequest";
-import { watch } from "vue";
 
 const { data, error, handleRequest, isLoading } = useAPIRequest<
   { id: string; displayName: string; zipetteCoins: number }[]
@@ -22,10 +21,6 @@ const { data, error, handleRequest, isLoading } = useAPIRequest<
   endpoint: "/leaderboard?limit=10",
   method: "GET",
   immediate: true,
-});
-
-watch(data, () => {
-  console.log(data.value);
 });
 </script>
 
