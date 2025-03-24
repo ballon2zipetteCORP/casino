@@ -43,7 +43,7 @@ import MineSweeperRules from './MineSweeperRules.vue';
 
 const NB_COL = 6;
 const NB_ROW = 6;
-const ITEMS: Record<number, string> = { "-1": "empty", 0: "bomb", 1: "ruby-chest", 2: "silver-chest", 3: "golden-chest" };
+const ITEMS: Record<number, string> = { "-1": "empty", 0: "bomb", 1: "ruby-chest", 3: "silver-chest", 2: "golden-chest" };
 
 const gridRevealed = ref(false);
 const {me} = storeToRefs(useAuthenticationStore());
@@ -159,7 +159,7 @@ const handleMessages = () => {
                 } else if(amountWon) {
                     label = "+"+amountWon+" ZPC"
                 }
-                //showBonus(label!);
+                showBonus(label!);
                 break;
         }
     })
