@@ -13,7 +13,7 @@ import MentionsLegalesView from "@/views/legal/MentionsLegalesView.vue";
 import PolitiqueDeConfidentialiteView from "@/views/legal/PolitiqueDeConfidentialiteView.vue";
 import GiveView from "@/views/other/GiveView.vue";
 import LeaderboardView from "@/views/other/LeaderboardView.vue";
-import { useWebsocketStore } from "@/stores/useWebsocketStore";
+import AviatorCrashView from "@/views/games/AviatorCrashView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -72,6 +72,11 @@ const router = createRouter({
           path: "mine-sweeper",
           name: "games.mine-sweeper",
           component: MinesweeperView,
+        },
+        {
+          path: "aviator-crash",
+          name: "games.aviator-crash",
+          component: AviatorCrashView,
         },
       ],
     },
