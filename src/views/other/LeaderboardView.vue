@@ -24,8 +24,8 @@
       </div>
     </div>
 
-    <div class="rest" v-for="(user, i) in data.slice(9)" :key="i">
-      <div>
+    <div class="rest">
+      <div v-for="(user, i) in data.slice(9)" :key="i">
         <h3>{{ 10+i }}</h3>
         <h4>{{ user.displayName }}</h4>
       </div>
