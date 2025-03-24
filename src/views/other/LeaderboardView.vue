@@ -1,15 +1,33 @@
 <template>
-  <div class="leaderboard">
-    <div class="content" v-for="(user, index) in data">
-      <!--<img alt="first" src="/images/leaderboard/first.png" />-->
-      <span class="place">
-        {{ index + 1 }}
-      </span>
+  <div v-if="data" class="leaderboard">
+    <div class="top">
+      <div v-if="data[1]">
+        <img alt="second" src="/images/leaderboard/second.png" />
+        <h3 class="username">{{ data[1].displayName }}</h3>
+        <h4 class="zipette">
+          {{ data[1].zipetteCoins }} <span class="zpc">ZPC</span>
+        </h4>
+      </div>
+      <div class="first">
+        <img alt="first" src="/images/leaderboard/first.png" />
+        <h3 class="username">{{ data[0].displayName }}</h3>
+        <h4 class="zipette">
+          {{ data[0].zipetteCoins }} <span class="zpc">ZPC</span>
+        </h4>
+      </div>
+      <div v-if="data[2]">
+        <img alt="third" src="/images/leaderboard/third.png" />
+        <h3 class="username">{{ data[2].displayName }}</h3>
+        <h4 class="zipette">
+          {{ data[2].zipetteCoins }} <span class="zpc">ZPC</span>
+        </h4>
+      </div>
+    </div>
+
+    <div class="rest" v-for="(user, i) in data.slice(9)" :key="i">
       <div>
-        <span class="username">{{ user.displayName }}</span>
-        <span class="zipette"
-          >{{ user.zipetteCoins }} <span class="zpc">ZPC</span></span
-        >
+        <h3>{{ 10+i }}</h3>
+        <h4>{{ user.displayName }}</h4>
       </div>
     </div>
   </div>
@@ -18,103 +36,81 @@
 <script lang="ts" setup>
 import useAPIRequest from "@/composables/useAPIRequest";
 
-const { data } = useAPIRequest<
-  { id: string; displayName: string; zipetteCoins: number }[]
->({
-  endpoint: "/leaderboard?limit=10",
-  method: "GET",
-  immediate: true,
+const { data } = useAPIRequest<{ displayName: string; zipetteCoins: number }[]>({ 
+  endpoint: "/leaderboard?limit=10", method: "GET", immediate: true
 });
 </script>
 
 <style scoped>
-.leaderboard {
+div.leaderboard .top {
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+  &>div {
+    text-align: center;
+    &.first {
+      transform: scale(1.2);
+      grid-area: first;
+    }
+    &.second {
+      grid-area: second;
+    }
+    &.third {
+      grid-area: third;
+    }
+
+    &>img {
+      width: 10em;
+    }
+    font-size: 1.5em;
+    &>h3 {
+      font-family: "poppins-bold", sans-serif;
+    }
+    &>h4 {
+      color: var(--primary);
+      font-family: "poppins-bold", sans-serif;
+      &>span {
+        font-family: "poppins-medium", sans-serif;
+        color: var(--gray-3);
+      }
+    }
+  }
+}
+
+div.rest {
   display: flex;
   flex-direction: column;
+  gap: 1em;
   align-items: center;
   justify-content: center;
-  gap: 1em;
+  margin-top: 4em;
 
-  .content {
+  &>div {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    font-size: 1.4em;
+
+    &>h3 {
+      background-color: var(--gray-1);
+      padding: .5em .8em;
+      border-radius: 100px;
+      border-radius: 20px;
+      font-family: "poppins-bold", sans-serif;
+    }
+    &>h4 {
+      font-family: "poppins-medium", sans-serif;
+    }
+  }
+}
+
+@media screen and (max-width: 808px) {
+  div.leaderboard div.top {
     display: grid;
-    grid-template-columns: 4em 600px;
-
-    > div {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-
-      .username {
-        font-size: 1em;
-      }
-
-      .zipette {
-        font-size: 0.7em;
-      }
-    }
-  }
-
-  div:first-of-type {
-    display: flex;
-    align-items: center;
-  }
-
-  img {
-    width: 6em;
-  }
-  .place {
-    font-size: 2em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: "Roboto Mono", monospace;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .content:first-of-type {
-    .place {
-      color: gold;
-      font-size: 6.5em;
-    }
-
-    .username {
-      font-size: 3em;
-    }
-
-    .zipette {
-      font-size: 1.5em;
-    }
-  }
-
-  .content:nth-of-type(2) {
-    .place {
-      color: silver;
-      font-size: 4.8em;
-    }
-
-    .username {
-      font-size: 2em;
-    }
-
-    .zipette {
-      font-size: 1em;
-    }
-  }
-
-  .content:nth-of-type(3) {
-    .place {
-      color: brown;
-      font-size: 3.5em;
-    }
-
-    .username {
-      font-size: 1.5em;
-    }
-
-    .zipette {
-      font-size: 0.8em;
-    }
+    grid-template-areas: 
+      "first"
+      "second"
+      "third";
   }
 }
 </style>
