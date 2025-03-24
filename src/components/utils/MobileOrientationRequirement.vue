@@ -5,7 +5,6 @@
                 <router-link :to="{name: 'home'}">Me ramener à l'accueil</router-link>
                 <mdicon class="cellphone-icon" name="cellphone" :size="120" />
                 <h2>Orientez votre téléphone en mode paysage pour jouer</h2>
-                <h3>Pour une meilleure experience jeu sur téléphone nous vous demandons d'orienter votre téléphone</h3>
             </div>
         </div>
     </template>
