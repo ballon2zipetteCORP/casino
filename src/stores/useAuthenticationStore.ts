@@ -68,7 +68,7 @@ export const useAuthenticationStore = defineStore("authenticationStore", () => {
           localStorage.setItem("kc_token", keycloak.token!);
           localStorage.setItem("kc_refreshToken", keycloak.refreshToken!);
         }
-      }, 60 * 1e3);
+      }, 55 * 1e3);
 
       isAuthenticated.value = authenticated;
       token.value = keycloak.token;
