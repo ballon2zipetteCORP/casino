@@ -26,7 +26,7 @@
         <button
           :disabled="!startAutoSpinning && (isSpinning || me?.zipetteCoins! < bet)"
           @click="requestToScroll"
-          class="primary"
+          class="secondary"
         >
           {{ startAutoSpinning ? "Stopper" : "Faire tourner" }}
         </button>
@@ -194,26 +194,6 @@ div.bet-area {
   align-content: center;
   justify-content: center;
   gap: 1em;
-}
-button.primary {
-  font-size: 1.5em;
-
-  box-shadow: 0px 8px 0 #3945b9;
-  transform: translateY(-8px);
-  transition: all 0.3s ease;
-
-  font-family: "poppins-bold", sans-serif;
-
-  & > span {
-    color: var(--gray-3);
-    font-size: 0.7em;
-    font-family: "poppins-medium", sans-serif;
-  }
-
-  &:focus {
-    transform: translateY(0);
-    box-shadow: unset;
-  }
 }
 
 h2 {

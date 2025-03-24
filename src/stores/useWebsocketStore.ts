@@ -17,8 +17,8 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
   const keepAliveInterval = ref<number | null>(null);
 
   // time until the next keep alive check
-  const KEEP_ALIVE_CHECK = 10 * 1e3;
-  const KEEP_ALIVE_TIMEOUT = 10 * 1e3;
+  const KEEP_ALIVE_CHECK = 5 * 1e3;
+  const KEEP_ALIVE_TIMEOUT = 5 * 1e3;
 
   const actualGame = ref<TGame | null>(null);
 

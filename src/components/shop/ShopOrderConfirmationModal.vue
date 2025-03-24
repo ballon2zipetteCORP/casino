@@ -9,7 +9,7 @@
 
                 <div class="info" role="alert">
                     <mdicon size="30" name="information" />
-                    Vous receverez un mail de confirmer à l'adresse suivante: <span>{{ me?.email }}</span>
+                    Vous receverez un mail de confirmation à l'adresse suivante: <span>{{ me?.email }}</span>
                 </div>
 
                 <div class="actions">

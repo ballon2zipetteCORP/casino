@@ -1,5 +1,6 @@
 <template>
-<h2>1. Collecte des Données Personnelles</h2>
+<div>
+    <h2>1. Collecte des Données Personnelles</h2>
 <p>Le site casino2zipette.online peut collecter certaines données personnelles lorsque les utilisateurs remplissent un formulaire ou interagissent avec le site.
 Les données collectées peuvent inclure :</p>
 
@@ -54,4 +55,27 @@ L’utilisateur peut configurer son navigateur pour refuser les cookies.</p>
 <h2>6. Contact</h2>
 <p>Pour toute question concernant la protection des données, veuillez nous contacter :</p>
 <a href="mailto:assiasamosbraquageforsure@ballon2zipette.com">📧 assiasamosbraquageforsure@ballon2zipette.com</a>
+</div>
 </template>
+
+<style scoped>
+h2 {
+    font-family: "poppins-bold", sans-serif;
+    margin-bottom: .5em;
+}
+p {
+    margin-bottom: 1em;
+}
+a {
+    color: var(--primary);
+}
+div {
+    margin-left: 2em;
+}
+
+ul {
+    margin-left: 2em;
+    margin-bottom: .5em;
+    list-style: "- ";
+}
+</style>
