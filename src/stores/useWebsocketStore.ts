@@ -53,6 +53,12 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
         pong();
         return;
       }
+      try {
+        const data = JSON.parse(message)
+        if(data.type === "ERROR") {
+          console.log(data.data);
+        }
+      } catch(e) {}
     });
   };
 
