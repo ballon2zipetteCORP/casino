@@ -54,6 +54,7 @@ export const useAuthenticationStore = defineStore("authenticationStore", () => {
         enableLogging: import.meta.env.NODE_ENV === "development",
       });
       if (authenticated) {
+        await keycloak.updateToken();
         console.log("[Keycloak] storing kc tokens");
         localStorage.setItem("kc_token", keycloak.token!);
         localStorage.setItem("kc_refreshToken", keycloak.refreshToken!);
