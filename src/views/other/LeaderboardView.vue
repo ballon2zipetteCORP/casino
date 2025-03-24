@@ -93,6 +93,7 @@ div.rest {
     gap: 1em;
     align-items: center;
     font-size: 1.4em;
+    width: 9em;
 
     &>h3 {
       background-color: var(--gray-1);
@@ -102,6 +103,7 @@ div.rest {
       font-family: "poppins-bold", sans-serif;
     }
     &>div {
+      
       &>h4 {
         font-family: "poppins-medium", sans-serif;
       }
