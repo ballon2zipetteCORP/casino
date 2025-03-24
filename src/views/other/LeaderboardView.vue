@@ -25,8 +25,8 @@
     </div>
 
     <div class="rest">
-      <div v-for="(user, i) in data.slice(9)" :key="i">
-        <h3>{{ 10+i }}</h3>
+      <div v-for="(user, i) in data.slice(3)" :key="i">
+        <h3>{{ 4+i }}</h3>
         <h4>{{ user.displayName }}</h4>
       </div>
     </div>
@@ -36,8 +36,8 @@
 <script lang="ts" setup>
 import useAPIRequest from "@/composables/useAPIRequest";
 
-const { data } = useAPIRequest<{ displayName: string; zipetteCoins: number }[]>({ 
-  endpoint: "/leaderboard?limit=10", method: "GET", immediate: true
+ const { data } = useAPIRequest<{ displayName: string; zipetteCoins: number }[]>({ 
+   endpoint: "/leaderboard?limit=10", method: "GET", immediate: true
 });
 </script>
 
