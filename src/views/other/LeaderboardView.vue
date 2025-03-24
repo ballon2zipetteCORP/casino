@@ -27,7 +27,10 @@
     <div class="rest">
       <div v-for="(user, i) in data.slice(3)" :key="i">
         <h3>{{ 4+i }}</h3>
-        <h4>{{ user.displayName }}</h4>
+        <div>
+          <h4>{{ user.displayName }}</h4>
+          <h5>{{ user.zipetteCoins }} ZPC</h5>
+        </div>
       </div>
     </div>
   </div>
@@ -98,8 +101,13 @@ div.rest {
       border-radius: 20px;
       font-family: "poppins-bold", sans-serif;
     }
-    &>h4 {
-      font-family: "poppins-medium", sans-serif;
+    &>div {
+      &>h4 {
+        font-family: "poppins-medium", sans-serif;
+      }
+      &>h5 {
+        color: var(--gray-3);
+      }
     }
   }
 }
