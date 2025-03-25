@@ -239,11 +239,69 @@ a.blackjack {
   a.avioncrash {
     padding-bottom: 5em;
   }
+  section {
+    grid-template-areas:
+      "cash cash cash cash"
+      "machine machine machine machine"
+      "roulette roulette tresor tresor"
+      "avioncrash avioncrash avioncrash avioncrash"
+      "blackjack blackjack blackjack blackjack";
+  }
+  a.avioncrash {
+    padding-bottom: 5em;
+  }
+  a.cash {
+    padding-bottom: 5em !important;
+  }
 }
 @media screen and (max-width: 646px) {
   section {
     display: flex;
     flex-direction: column;
+  }
+}
+@media screen and (max-width: 568px) {
+  a.cash {
+    img {
+      width: 13em;
+    }
+  }
+  a.tresor {
+    h2 {
+      padding-bottom: 3em;
+    }
+    img {
+      width: 10em;
+    }
+  }
+  a.machine {
+    img {
+      width: 8em;
+    }
+    h2 {
+      font-size: 1.7em;
+      padding-bottom: 3em;
+    }
+  }
+  a.avioncrash,
+  a.blackjack {
+    img {
+      width: 12em;
+    }
+  }
+  a.avioncrash {
+    h2 {
+      padding-bottom: 3em;
+    }
+  }
+  a.blackjack {
+    img {
+      right: 0;
+      top: 6em;
+    }
+    h2 {
+      padding-bottom: 5em;
+    }
   }
 }
 </style>
