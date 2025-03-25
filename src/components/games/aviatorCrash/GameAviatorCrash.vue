@@ -35,7 +35,7 @@ import UserBetInput from '@/components/ui/UserBetInput.vue';
 import BaseGame from '../BaseGame.vue';
 import gsap from "gsap";
 
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useSound } from '@/composables/useSound';
 import { useWebsocketStore } from '@/stores/useWebsocketStore';
 import { storeToRefs } from 'pinia';
@@ -58,9 +58,13 @@ const getDuration = () => {
     return newCoef;
 }
 
+const loseSound = useSound("/sounds/kaaris-loose.mp3");
+const hasExplosed = ref<boolean>(false);
+
 const playLose = () => {
     reset();
-    useSound("/sounds/kaaris-loose.mp3").playSound();
+    
+    loseSound.playSound();
     window.toast({
         level: "INFO",
         title: "Vous avez tout perdu !",
@@ -104,6 +108,8 @@ const requestToPlay = () => {
 }
 
 const toggleExplosionAnimation = async (onComplete: () => void) => {
+    if(hasExplosed.value) return;
+    hasExplosed.value = true;
     gsap.set(".explosion-sprite", { x: "19em" });
     await globalUtils.sleep(100);
     gsap.set(".airplane", { x: "-15em" });
@@ -121,6 +127,7 @@ const toggleExplosionAnimation = async (onComplete: () => void) => {
 
     gsap.set(".explosion-sprite", { x: "-15em" });
     gsap.set(".explosion-sprite", { backgroundPosition: "47% 10%" });
+    hasExplosed.value = false;
 }
   
 const play = () => {
@@ -140,7 +147,7 @@ const play = () => {
         ease: "linear",
         onRepeat: () => {
             if(maxCoef.value > currentCoef.value) {
-                currentCoef.value+=0.03;
+                currentCoef.value+=0.01;
                 scrollAnimation.value?.duration(getDuration());
                 scrollAnimation.value?.restart();
             } else {
