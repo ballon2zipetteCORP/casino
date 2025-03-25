@@ -24,7 +24,7 @@
         <img alt="tresor" src="/images/games/homePage/tresor.png" />
       </article>
     </RouterLink>
-    <RouterLink class="avioncrash" :to="{ name: 'home' }">
+    <RouterLink class="avioncrash" :to="{ name: 'games.aviator-crash' }">
       <div class="locked">
         <div class="center">
           <mdicon size="60" name="lock" />
