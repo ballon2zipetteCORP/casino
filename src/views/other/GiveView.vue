@@ -108,7 +108,6 @@ const handleSubmit = async () => {
     return alert("Utilisateur introuvable");
   }
 
-  console.log(cheat.value);
   await handleRequest({
     body: { amount: amount.value, cheat: cheat.value },
     endpoint: "/give/" + user.value.id,

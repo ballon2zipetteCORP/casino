@@ -1,5 +1,5 @@
 <template>
-  <BaseGame>
+  <BaseGame :is-in-beta="true">
     <div class="blackjack">
       <h1>Blackjack</h1>
 
@@ -218,6 +218,7 @@ const handleMessages = () => {
           title: "La partie a commencé",
         });
 
+        me.value!.zipetteCoins -= bet.value!;
         break;
 
       case "CARD_HIT":
@@ -235,7 +236,6 @@ const handleMessages = () => {
           title: "Perdu",
           subtitle: `Merci pour tes ${bet.value} ZPC !`,
         });
-        me.value!.zipetteCoins -= bet.value!;
         break;
 
       case "DEALER_HAND":
@@ -253,7 +253,7 @@ const handleMessages = () => {
           title: "Gagner",
           subtitle: `Tu remportes ${bet.value! * 2} ZPC !`,
         });
-        me.value!.zipetteCoins -= bet.value! * 2;
+        me.value!.zipetteCoins += bet.value! * 2;
         break;
     }
   });
