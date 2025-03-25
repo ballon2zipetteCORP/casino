@@ -235,6 +235,7 @@ const handleMessages = () => {
           title: "Perdu",
           subtitle: `Merci pour tes ${bet.value} ZPC !`,
         });
+        me.value!.zipetteCoins -= bet.value!;
         break;
 
       case "DEALER_HAND":
@@ -252,6 +253,7 @@ const handleMessages = () => {
           title: "Gagner",
           subtitle: `Tu remportes ${bet.value! * 2} ZPC !`,
         });
+        me.value!.zipetteCoins -= bet.value! * 2;
         break;
     }
   });
