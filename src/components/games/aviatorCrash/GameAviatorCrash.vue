@@ -169,9 +169,11 @@ watch(me, value => {
             switch (message.type) {
                 case "CASHED_OUT":
                     const {totalWon} = message.data ?? {};
+                    me.value!.zipetteCoins += totalWon;
                     playWin(totalWon);
                     break;
                 case "START_PLAYING":
+                    me.value!.zipetteCoins -= bet.value;
                     const {maxCoef: coef} = message.data;
                     maxCoef.value = coef;
                     play();
