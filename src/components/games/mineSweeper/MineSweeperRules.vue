@@ -22,7 +22,7 @@ const BONUS: {name: string;description: string;imagePath:string;}[] = [
     },
     { 
         name: "Coffre en argent",
-        description: "Tu gagnes 500 ZPC",
+        description: "Tu gagnes ta somme misée.",
         imagePath: "silver-chest.png"
     },
     { 

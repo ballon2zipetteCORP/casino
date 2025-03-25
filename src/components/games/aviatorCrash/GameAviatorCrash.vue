@@ -28,7 +28,7 @@ const play = () => {
     gsap.set(slotInner, { x: "0em" });
     const scrollAnimation = gsap.to(slotInner, {
         x: `-40em`,
-        duration: 1,
+        duration: 2,
         repeat: -1,
         ease: "linear",
         onComplete: () => {
@@ -53,6 +53,10 @@ div.clouds {
     background-size: cover;
     height: 30em;
     width: 40em;
+
+    &:nth-child(odd) {
+        margin-left: -.3em;
+    }
 }
 img {
     width: 20em;
