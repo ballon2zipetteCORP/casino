@@ -13,7 +13,7 @@
                 </div>
 
                 <div class="actions">
-                    <button @click="closeModal" class="secondary">
+                    <button @click="closeModal" class="back">
                         Retour aux produits
                     </button>
                     <button @click="confirmOrder" class="primary">
@@ -151,7 +151,7 @@ div.actions {
     justify-content: flex-end;
     margin-top: 1em;
 }
-button.secondary {
+button.back {
     text-decoration: underline;
 }
 </style>
