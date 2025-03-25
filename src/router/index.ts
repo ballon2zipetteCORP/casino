@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import ShopView from "@/views/shop/ShopView.vue";
 
+import BlackJackView from "@/views/games/BlackJackView.vue";
 import CashView from "@/views/games/CashView.vue";
 import EuropeanRouletteView from "@/views/games/EuropeanRouletteView.vue";
 import SlotMachineView from "@/views/games/SlotMachineView.vue";
@@ -13,7 +14,6 @@ import MentionsLegalesView from "@/views/legal/MentionsLegalesView.vue";
 import PolitiqueDeConfidentialiteView from "@/views/legal/PolitiqueDeConfidentialiteView.vue";
 import GiveView from "@/views/other/GiveView.vue";
 import LeaderboardView from "@/views/other/LeaderboardView.vue";
-import { useWebsocketStore } from "@/stores/useWebsocketStore";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -67,6 +67,11 @@ const router = createRouter({
           path: "cash",
           name: "games.cash",
           component: CashView,
+        },
+        {
+          path: "blackjack",
+          name: "games.blackjack",
+          component: BlackJackView,
         },
         {
           path: "mine-sweeper",
