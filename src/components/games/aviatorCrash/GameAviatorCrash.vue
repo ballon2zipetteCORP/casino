@@ -2,7 +2,7 @@
   <BaseGame :is-in-beta="true">
     <div class="frame">
       <div class="header">
-        <h2>Crash aviator</h2>
+        <h2>Jeu de la fusée feat RISKA</h2>
         <p>
           Cliquez sur "arrêter" une fois lancé avant que l'avion explose !
           Kaaris n'a pas validé le jeu.
