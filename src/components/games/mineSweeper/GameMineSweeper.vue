@@ -1,6 +1,5 @@
 <template>
-    <BaseGame>
-        <h2>Chasse au trésor</h2>
+    <BaseGame :landscape-required="true">
         <MineSweeperFrame />
     </BaseGame>
 </template>
@@ -9,10 +8,3 @@
 import BaseGame from '../BaseGame.vue';
 import MineSweeperFrame from './MineSweeperFrame.vue';
 </script>
-
-<style scoped>
-h2 {
-    font-family: "poppins-bold", sans-serif;
-    text-align: center;
-}
-</style>

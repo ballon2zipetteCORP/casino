@@ -1,11 +1,11 @@
 <template>
-    <template v-if="!hasOrientedToLandscape">
+    <template v-if="!hasOrientedToLandscape && !ignoreLandscapeMode">
         <div class="orientation">
             <div class="center">
+                <button class="ignore" @click="ignoreLandscapeMode = true">Je m'en fou je veux jouer quand même</button>
                 <router-link :to="{name: 'home'}">Me ramener à l'accueil</router-link>
                 <mdicon class="cellphone-icon" name="cellphone" :size="120" />
                 <h2>Orientez votre téléphone en mode paysage pour jouer</h2>
-                <h3>Pour une meilleure experience jeu sur téléphone nous vous demandons d'orienter votre téléphone</h3>
             </div>
         </div>
     </template>
@@ -16,10 +16,11 @@
 
 <script lang="ts" setup>
 import useMobilePhone from '@/composables/useMobilephone';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 const {orientation, isOnMobilePhone} = useMobilePhone();
 
+const ignoreLandscapeMode = ref<boolean>(false);
 const hasOrientedToLandscape = computed(() => {
     if(!isOnMobilePhone.value) return true;
     return orientation.value === "LANDSCAPE";
@@ -27,6 +28,12 @@ const hasOrientedToLandscape = computed(() => {
 </script>
 
 <style scoped>
+.ignore {
+    display: block;
+    text-align: center;
+    text-decoration: underline;
+    color: var(--primary);
+}
 a {
     color: var(--gray-3);
     text-align: center;

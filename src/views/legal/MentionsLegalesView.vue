@@ -1,5 +1,6 @@
 <template>
-<h2>1. Informations Générales</h2>
+<div>
+    <h2>1. Informations Générales</h2>
 
 <ul>
     <li>
@@ -67,4 +68,26 @@
 <a href="mailto:assiasamosbraquageforsure@ballon2zipette.com">
     📧 assiasamosbraquageforsure@ballon2zipette.com
 </a>
+</div>
 </template>
+
+<style scoped>
+h2 {
+    font-family: "poppins-bold", sans-serif;
+    margin-bottom: .5em;
+}
+p {
+    margin-bottom: 1em;
+}
+a {
+    color: var(--primary);
+}
+div {
+    margin-left: 2em;
+}
+ul {
+    margin-left: 2em;
+    margin-bottom: .5em;
+    list-style: "- ";
+}
+</style>
