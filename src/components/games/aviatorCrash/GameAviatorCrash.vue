@@ -147,7 +147,7 @@ const play = () => {
         ease: "linear",
         onRepeat: () => {
             if(maxCoef.value > currentCoef.value) {
-                currentCoef.value+=0.01;
+                currentCoef.value+=0.03;
                 scrollAnimation.value?.duration(getDuration());
                 scrollAnimation.value?.restart();
             } else {
