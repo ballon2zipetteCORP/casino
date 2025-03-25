@@ -35,7 +35,7 @@ import UserBetInput from '@/components/ui/UserBetInput.vue';
 import BaseGame from '../BaseGame.vue';
 import gsap from "gsap";
 
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useSound } from '@/composables/useSound';
 import { useWebsocketStore } from '@/stores/useWebsocketStore';
 import { storeToRefs } from 'pinia';
@@ -60,7 +60,7 @@ const getDuration = () => {
 
 const playLose = () => {
     reset();
-    useSound("/sounds/kaaris-loose.mp3").playSound({ volume: .5 });
+    useSound("/sounds/kaaris-loose.mp3").playSound();
     window.toast({
         level: "INFO",
         title: "Vous avez tout perdu !",
