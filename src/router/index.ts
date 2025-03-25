@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import ShopView from "@/views/shop/ShopView.vue";
 
+import BlackJackView from "@/views/games/BlackJackView.vue";
 import CashView from "@/views/games/CashView.vue";
 import EuropeanRouletteView from "@/views/games/EuropeanRouletteView.vue";
 import SlotMachineView from "@/views/games/SlotMachineView.vue";
@@ -67,6 +68,11 @@ const router = createRouter({
           path: "cash",
           name: "games.cash",
           component: CashView,
+        },
+        {
+          path: "blackjack",
+          name: "games.blackjack",
+          component: BlackJackView,
         },
         {
           path: "mine-sweeper",
