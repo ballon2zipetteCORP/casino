@@ -76,7 +76,7 @@
         </div>
       </div>
 
-      <div class="actions">
+      <div v-if="gameStarted" class="actions">
         <button @click="hit" :disabled="isLoading || gameOver">Tirer</button>
         <button @click="stand" :disabled="isLoading || gameOver">Rester</button>
       </div>
