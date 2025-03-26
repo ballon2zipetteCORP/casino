@@ -100,7 +100,9 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
       try {
         const message = JSON.parse(data);
         callback(message);
-      } catch (e) {} // ignore
+      } catch (e) {
+        console.error(e)
+      } // ignore
     });
   };
 
