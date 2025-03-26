@@ -191,7 +191,7 @@ watch(me, (value) => {
       }
     });
   }
-});
+}, {immediate: true});
 </script>
 
 <style scoped>
