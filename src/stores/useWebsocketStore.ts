@@ -28,6 +28,8 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
 
   const actualGame = ref<TGame | null>(null);
 
+  const currentListeners = ref<((message: IMessage) => void)[]>([]);
+
   const connect = (game: TGame) => {
     const { me, token } = storeToRefs(useAuthenticationStore());
 
@@ -42,6 +44,14 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
         clearInterval(keepAliveInterval.value);
       }
       keepAliveInterval.value = setInterval(ping, KEEP_ALIVE_CHECK);
+
+      if (game === actualGame.value) {
+        currentListeners.value.forEach((listener) => {
+          addMessageListener(listener, true);
+        });
+      } else {
+        currentListeners.value = [];
+      }
 
       _log("Connection opened");
     };
@@ -60,12 +70,12 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
         return;
       }
       try {
-        const data = JSON.parse(message)
+        const data = JSON.parse(message);
         // theses errors are sent by the WS
-        if(data.type === "ERROR") {
+        if (data.type === "ERROR") {
           console.error(data.data);
         }
-      } catch(e) {}
+      } catch (e) {}
     });
   };
 
@@ -95,13 +105,17 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
     }
   };
 
-  const addMessageListener = (callback: (message: IMessage) => void) => {
+  const addMessageListener = (
+    callback: (message: IMessage) => void,
+    isRestored = false
+  ) => {
+    if (!isRestored) currentListeners.value.push(callback);
     websocket.value?.addEventListener("message", ({ data }) => {
       try {
         const message = JSON.parse(data);
         callback(message);
       } catch (e) {
-        console.error(e)
+        console.error(e);
       } // ignore
     });
   };

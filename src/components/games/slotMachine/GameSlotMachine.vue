@@ -1,42 +1,44 @@
 <template>
-    <BaseGame>
-      <h2>Machine à zipette</h2>
-      <p>Si vous avez 4 symboles identiques vous remporter le double du gain misé.</p>
+  <BaseGame>
+    <h2>Machine à zipette</h2>
+    <p>
+      Si vous avez 4 symboles identiques vous remporter le double du gain misé.
+    </p>
 
-      <div id="slot-machine">
-        <div
-          class="slot"
-          :id="`slot-${index}`"
-          v-for="(_, index) in new Array(NB_SLOTS).fill('')"
-          :key="index"
-        >
-          <div class="slot-inner">
-            <img
-              v-for="(icon, jindex) in [...IMAGE_PATH, ...IMAGE_PATH]"
-              :key="icon + index + jindex"
-              :alt="icon"
-              :src="`/images/games/slotMachine/${icon}.png`"
-            />
-          </div>
+    <div id="slot-machine">
+      <div
+        class="slot"
+        :id="`slot-${index}`"
+        v-for="(_, index) in new Array(NB_SLOTS).fill('')"
+        :key="index"
+      >
+        <div class="slot-inner">
+          <img
+            v-for="(icon, jindex) in [...IMAGE_PATH, ...IMAGE_PATH]"
+            :key="icon + index + jindex"
+            :alt="icon"
+            :src="`/images/games/slotMachine/${icon}.png`"
+          />
         </div>
       </div>
-      
-      <div class="bet-area">
-        <UserBetInput v-model="bet" />
-        <button
-          :disabled="!startAutoSpinning && (isSpinning || me?.zipetteCoins! < bet)"
-          @click="requestToScroll"
-          class="secondary"
-        >
-          {{ startAutoSpinning ? "Stopper" : "Faire tourner" }}
-        </button>
-        <!-- <div class="auto-spin">
+    </div>
+
+    <div class="bet-area">
+      <UserBetInput v-model="bet" />
+      <button
+        :disabled="!startAutoSpinning && (isSpinning || me?.zipetteCoins! < bet)"
+        @click="requestToScroll"
+        class="secondary"
+      >
+        {{ startAutoSpinning ? "Stopper" : "Faire tourner" }}
+      </button>
+      <!-- <div class="auto-spin">
           <label for="auto-spin">
             Auto spin
           </label>
           <input v-model="autoSpin" type="checkbox" id="auto-spin" />
         </div> -->
-      </div>
+    </div>
   </BaseGame>
 </template>
 
@@ -44,14 +46,14 @@
 import gsap from "gsap";
 import BaseGame from "../BaseGame.vue";
 
+import UserBetInput from "@/components/ui/UserBetInput.vue";
 import { useAuthenticationStore } from "@/stores/useAuthenticationStore";
 import { useWebsocketStore } from "@/stores/useWebsocketStore";
 import { storeToRefs } from "pinia";
 import { ref, watch } from "vue";
-import UserBetInput from "@/components/ui/UserBetInput.vue";
 
 const NB_SLOTS: number = 4;
-const IMAGE_PATH: Array<string> = ["logo","beer", "fire", "knife"];
+const IMAGE_PATH: Array<string> = ["logo", "beer", "fire", "knife"];
 
 const isSpinning = ref<boolean>(false);
 
@@ -63,18 +65,18 @@ const bet = ref<number>(200);
 const hasWon = ref<boolean>(false);
 
 const requestToScroll = async () => {
-  if(autoSpin.value) {
+  if (autoSpin.value) {
     stopAutoSpin();
   }
 
-  if(autoSpin.value) {
+  if (autoSpin.value) {
     startAutoSpinning.value = true;
-    while(autoSpin.value) {
-      if(me?.value!.zipetteCoins! < bet.value) {
+    while (autoSpin.value) {
+      if (me?.value!.zipetteCoins! < bet.value) {
         stopAutoSpin();
         return;
       }
-      if(!isSpinning.value) {
+      if (!isSpinning.value) {
         request();
       }
     }
@@ -90,10 +92,10 @@ const request = () => {
     type: "USER_WANT_TO_PLAY",
     data: { bet: bet.value },
   });
-}
+};
 const stopAutoSpin = () => {
   autoSpin.value = false;
-}
+};
 
 const handleMessages = () => {
   useWebsocketStore().addMessageListener((message) => {
