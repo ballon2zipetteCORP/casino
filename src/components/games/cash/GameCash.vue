@@ -7,7 +7,10 @@
 
       <div id="rules">
         <p>
-          Grattez le ticket pour révéler les numéros. À gauche, vous verrez les numéros présents sur le ticket. À droite, vous trouverez les numéros gagnants. Si un numéro gagnant est présent sur le ticket, vous gagnez le montant indiqué sur le ticket.
+          Grattez le ticket pour révéler les numéros. À gauche, vous verrez les
+          numéros présents sur le ticket. À droite, vous trouverez les numéros
+          gagnants. Si un numéro gagnant est présent sur le ticket, vous gagnez
+          le montant indiqué sur le ticket.
         </p>
       </div>
 

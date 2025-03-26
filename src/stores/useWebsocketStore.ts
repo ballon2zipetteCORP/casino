@@ -47,7 +47,11 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
 
       if (game === actualGame.value) {
         currentListeners.value.forEach((listener) => {
-          addMessageListener(listener, true);
+          websocket.value?.removeEventListener("message", listener as any);
+        });
+
+        currentListeners.value.forEach((listener) => {
+          websocket.value?.addEventListener("message", listener as any);
         });
       } else {
         currentListeners.value = [];
@@ -105,19 +109,18 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
     }
   };
 
-  const addMessageListener = (
-    callback: (message: IMessage) => void,
-    isRestored = false
-  ) => {
-    if (!isRestored) currentListeners.value.push(callback);
-    websocket.value?.addEventListener("message", ({ data }) => {
+  const addMessageListener = (callback: (message: IMessage) => void) => {
+    const func = ({ data }: any) => {
       try {
-        const message = JSON.parse(data);
-        callback(message);
-      } catch (e) {
-        console.error(e);
-      } // ignore
-    });
+        if (typeof data === "string") {
+          data = JSON.parse(data);
+        }
+        callback(data);
+      } catch (e) {} // ignore
+    };
+
+    currentListeners.value.push(func);
+    websocket.value?.addEventListener("message", func);
   };
 
   const send = (data: string | Record<string, unknown>) => {
