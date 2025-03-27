@@ -30,8 +30,6 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
 
   const actualGame = ref<TGame | null>(null);
 
-  const currentListeners = ref<TListener[]>([]);
-
   const _getListeners = (): TListener[] => {
     const listeners = localStorage.getItem("casino2zipette:listeners");
     if(listeners) {
