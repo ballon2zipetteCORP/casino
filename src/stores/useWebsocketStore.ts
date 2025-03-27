@@ -15,6 +15,8 @@ export interface IMessage {
   data?: any;
 }
 
+type TListener = (message: IMessage) => void;
+
 export const useWebsocketStore = defineStore("websocketStore", () => {
   const identityId = ref<string | null>(null);
   const websocket = ref<WebSocket | null>(null);
@@ -28,23 +30,45 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
 
   const actualGame = ref<TGame | null>(null);
 
-  const currentListeners = ref<((message: IMessage) => void)[]>([]);
+  const currentListeners = ref<TListener[]>([]);
+
+  const _getListeners = (): TListener[] => {
+    const listeners = localStorage.getItem("casino2zipette:listeners");
+    if(listeners) {
+      const funcs = JSON.parse(listeners) as string[];
+      return funcs.map((f: string) => eval(f));
+    }
+    return [];
+  }
+  const _flushListeners = () => {
+    localStorage.removeItem("casino2zipette:listeners");
+  }
+  const _hasListener = (listener: TListener) => {
+    return !!_getListeners().find(f => f.toString() === listener.toString());
+  }
+  const _storeListener = (listener: TListener) => {
+    const listeners = _getListeners();
+    localStorage.setItem("casino2zipette:listeners", JSON.stringify([
+      ...listeners.map(f => f.toString()),
+      listener.toString()
+    ]));
+  }
 
   const connect = (game: TGame) => {
     const { me, token } = storeToRefs(useAuthenticationStore());
 
     identityId.value = me.value!.id;
-    actualGame.value = game;
     websocket.value = new WebSocket(
       `${import.meta.env.VITE_WSS}/${encodeURI(token.value!)}/${game}`
     );
 
     if(game !== actualGame.value) {
-      currentListeners.value = [];
+      _flushListeners();
     }
-    currentListeners.value.forEach((callback: any) => {
+    _getListeners().forEach((callback: TListener) => {
       addMessageListener(callback);
     });
+    actualGame.value = game;
 
     websocket.value.onopen = () => {
       if (keepAliveInterval.value) {
@@ -113,8 +137,8 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
       } catch (e) {} // ignore
     };
 
-    if(currentListeners.value?.findIndex(f => f.toString() === callback.toString()) === -1) {
-      currentListeners.value.push(callback);
+    if(!_hasListener(callback)) {
+      _storeListener(callback);
     }
     websocket.value?.addEventListener("message", func);
   };
