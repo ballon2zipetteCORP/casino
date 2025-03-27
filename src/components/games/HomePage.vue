@@ -25,24 +25,24 @@
       </article>
     </RouterLink>
     <RouterLink class="avioncrash" :to="{ name: 'games.aviator-crash' }">
-      <div class="locked">
+      <!-- <div class="locked">
         <div class="center">
           <mdicon size="60" name="lock" />
           <h3>Prochainement</h3>
         </div>
-      </div>
+      </div> -->
       <article>
         <h2>Avion crash</h2>
         <img alt="tresor" src="/images/games/homePage/avion-crash.png" />
       </article>
     </RouterLink>
     <RouterLink class="blackjack" :to="{ name: 'games.blackjack' }">
-      <div class="locked">
+      <!-- <div class="locked">
         <div class="center">
           <mdicon size="60" name="lock" />
           <h3>Prochainement</h3>
         </div>
-      </div>
+      </div> -->
       <article>
         <h2>Blackjack</h2>
         <img alt="tresor" src="/images/games/homePage/blackjack.png" />

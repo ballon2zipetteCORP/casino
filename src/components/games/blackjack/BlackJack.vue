@@ -1,5 +1,5 @@
 <template>
-  <BaseGame :is-in-beta="true">
+  <BaseGame>
     <div class="blackjack">
       <h1>Blackjack</h1>
 

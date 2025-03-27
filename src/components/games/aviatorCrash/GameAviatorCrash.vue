@@ -1,5 +1,5 @@
 <template>
-  <BaseGame :landscape-required="true" :is-in-beta="true">
+  <BaseGame :landscape-required="true">
     <div class="frame">
       <div class="header">
         <h2>Jeu de la fusée feat RISKA</h2>
