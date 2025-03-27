@@ -26,7 +26,7 @@
     <div class="bet-area">
       <UserBetInput v-model="bet" />
       <button
-        :disabled="!startAutoSpinning && (isSpinning || me?.zipetteCoins! < bet)"
+        :disabled="isSpinning || me?.zipetteCoins! < bet"
         @click="requestToScroll"
         class="secondary"
       >

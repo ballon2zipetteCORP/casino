@@ -39,24 +39,18 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
       `${import.meta.env.VITE_WSS}/${encodeURI(token.value!)}/${game}`
     );
 
+    if(game !== actualGame.value) {
+      currentListeners.value = [];
+    }
+    currentListeners.value.forEach((callback: any) => {
+      addMessageListener(callback);
+    });
+
     websocket.value.onopen = () => {
       if (keepAliveInterval.value) {
         clearInterval(keepAliveInterval.value);
       }
       keepAliveInterval.value = setInterval(ping, KEEP_ALIVE_CHECK);
-
-      if (game === actualGame.value) {
-        currentListeners.value.forEach((listener) => {
-          websocket.value?.removeEventListener("message", listener as any);
-        });
-
-        currentListeners.value.forEach((listener) => {
-          websocket.value?.addEventListener("message", listener as any);
-        });
-      } else {
-        currentListeners.value = [];
-      }
-
       _log("Connection opened");
     };
     websocket.value.onclose = () => {
@@ -119,7 +113,9 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
       } catch (e) {} // ignore
     };
 
-    currentListeners.value.push(func);
+    if(currentListeners.value?.findIndex(f => f.toString() === callback.toString()) === -1) {
+      currentListeners.value.push(callback);
+    }
     websocket.value?.addEventListener("message", func);
   };
 

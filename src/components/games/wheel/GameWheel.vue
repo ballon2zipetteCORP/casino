@@ -57,7 +57,6 @@ const handleMessages = () => {
 };
 
 const showResult = () => {
-  console.log("show result;");
   if (amountWon.value > 0) {
     me.value!.zipetteCoins += amountWon.value;
     window.toast({
