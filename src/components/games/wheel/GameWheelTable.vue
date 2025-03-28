@@ -247,7 +247,7 @@ const NUMBERS_13_TO_24 = ALL_NUMBERS.slice(13, 25);
 const NUMBERS_25_TO_36 = ALL_NUMBERS.slice(25);
 
 // red numbers
-const RED_NUMBERS = [3, 2, 5,1,7,9,12,18,21,27,30,36,14,23,32,16,19,25,34];
+const RED_NUMBERS = [3, 5,1,7,9,12,18,21,27,30,36,14,23,32,16,19,25,34];
 // black numbers
 const BLACK_NUMBERS = ALL_NUMBERS.filter(number => !RED_NUMBERS.includes(number) && number !== 0);
 
