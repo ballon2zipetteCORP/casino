@@ -3,7 +3,7 @@
     <button class="close" @click="toggleChat">
       <mdicon name="chevron-up" />
     </button>
-    <div class="messages" :ref="chatContainer">
+    <div class="messages" ref="chatContainer">
       <div
         v-for="(chat, index) in chats"
         :key="index"
@@ -23,6 +23,7 @@
     </div>
     <div class="input-container" v-if="opened">
       <input
+        @keyup.enter="send"
         v-model="content"
         id="content"
         placeholder="Écrivez un message..."
@@ -42,7 +43,7 @@ import {
   type TGame,
 } from "@/stores/useWebsocketStore";
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
+import { nextTick, ref, watch } from "vue";
 
 const content = ref<string>("");
 const opened = ref<boolean>(true);
@@ -62,13 +63,40 @@ const send = () => {
   setTimeout(() => {
     inCooldown.value = false;
   }, 700);
+};
 
-  chatContainer.value?.scrollTo(0, chatContainer.value?.scrollHeight);
+const scrollToBottom = () => {
+  chatContainer.value?.scrollTo({
+    top: chatContainer.value?.scrollHeight,
+    behavior: "smooth",
+  });
+};
+
+const isAsBottom = () => {
+  if (!chatContainer.value) return false;
+  const { scrollTop, scrollHeight, clientHeight } = chatContainer.value;
+  console.log(scrollTop, clientHeight, scrollHeight);
+  return scrollTop + clientHeight < scrollHeight - 200;
 };
 
 const toggleChat = () => {
   opened.value = !opened.value;
+  nextTick(() => {
+    scrollToBottom();
+  });
 };
+
+watch(
+  chats,
+  () => {
+    nextTick(() => {
+      if (opened.value && !isAsBottom()) {
+        scrollToBottom();
+      }
+    });
+  },
+  { immediate: true, deep: true }
+);
 </script>
 
 <style scoped>
