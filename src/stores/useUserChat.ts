@@ -11,8 +11,11 @@ interface IChat {
 export const userChatStore = defineStore("chat", () => {
   const { actualGame } = storeToRefs(useWebsocketStore());
   const chats = ref<IChat[]>([]);
+  const initialized = ref<boolean>(false);
 
   const init = () => {
+    if(initialized.value) return;
+    initialized.value = true;
     useWebsocketStore().addMessageListener((message: any) => {
       if (message.type === "CHAT_RECEIVED") {
         chats.value.push({
