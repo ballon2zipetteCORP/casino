@@ -75,7 +75,6 @@ const scrollToBottom = () => {
 const isAsBottom = () => {
   if (!chatContainer.value) return false;
   const { scrollTop, scrollHeight, clientHeight } = chatContainer.value;
-  console.log(scrollTop, clientHeight, scrollHeight);
   return scrollTop + clientHeight < scrollHeight - 200;
 };
 
