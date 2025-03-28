@@ -87,6 +87,7 @@ const toggleChat = () => {
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   transition: max-height 0.3s ease;
+  z-index: 999;
 }
 
 .chat-container.closed {
