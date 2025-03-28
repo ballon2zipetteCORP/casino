@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-container" :class="{ closed: !opened }">
+  <div v-if="actualGame" class="chat-container" :class="{ closed: !opened }">
     <button class="close" @click="toggleChat">
       <mdicon name="chevron-up" />
     </button>
@@ -36,7 +36,11 @@
 
 <script setup lang="ts">
 import { userChatStore } from "@/stores/useUserChat";
-import { GameMapper, type TGame } from "@/stores/useWebsocketStore";
+import {
+  GameMapper,
+  useWebsocketStore,
+  type TGame,
+} from "@/stores/useWebsocketStore";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
 
@@ -46,6 +50,8 @@ const opened = ref<boolean>(true);
 const inCooldown = ref<boolean>(false);
 
 const { chats } = storeToRefs(userChatStore());
+
+const { actualGame } = storeToRefs(useWebsocketStore());
 
 const send = () => {
   if (!content.value?.trim()) return;
