@@ -15,6 +15,15 @@ export interface IMessage {
   data?: any;
 }
 
+export const GameMapper: Record<TGame, string> = {
+  AVIATOR_CRASH: "Aviator crash",
+  BLACKJACK: "Blackjack",
+  CASH_GAME: "Cash",
+  EUROPEAN_ROULETTE: "Roulette zipette",
+  MINE_SWEEPER: "Chasse au zipette coins",
+  SLOT_MACHINE: "Machine à sous"
+}
+
 type TListener = (message: IMessage) => void;
 
 export const useWebsocketStore = defineStore("websocketStore", () => {
@@ -125,7 +134,7 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
     }
   };
 
-  const addMessageListener = (callback: (message: IMessage) => void) => {
+  const addMessageListener = (callback: (message: IMessage) => void, store: boolean = true) => {
     const func = ({ data }: any) => {
       try {
         if (typeof data === "string") {
@@ -135,7 +144,7 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
       } catch (e) {} // ignore
     };
 
-    if(!_hasListener(callback)) {
+    if(store && !_hasListener(callback)) {
       _storeListener(callback);
     }
     websocket.value?.addEventListener("message", func);
@@ -165,5 +174,6 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
     close,
     send,
     websocket,
+    actualGame
   };
 });

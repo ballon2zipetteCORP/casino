@@ -5,6 +5,8 @@
 
 <script setup>
 import HomePage from '@/components/games/HomePage.vue';
+
+
 import useMarketing from '@/marketing/useMarketing';
 import { shallowRef } from 'vue';
 
