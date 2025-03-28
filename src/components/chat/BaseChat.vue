@@ -3,7 +3,7 @@
     <button class="close" @click="toggleChat">
       <mdicon name="chevron-up" />
     </button>
-    <div class="messages">
+    <div class="messages" :ref="chatContainer">
       <div
         v-for="(chat, index) in chats"
         :key="index"
@@ -46,6 +46,7 @@ import { ref } from "vue";
 
 const content = ref<string>("");
 const opened = ref<boolean>(true);
+const chatContainer = ref<HTMLElement | null>(null);
 
 const inCooldown = ref<boolean>(false);
 
@@ -61,6 +62,8 @@ const send = () => {
   setTimeout(() => {
     inCooldown.value = false;
   }, 700);
+
+  chatContainer.value?.scrollTo(0, chatContainer.value?.scrollHeight);
 };
 
 const toggleChat = () => {
