@@ -16,13 +16,13 @@ export interface IMessage {
 }
 
 export const GameMapper: Record<TGame, string> = {
-  AVIATOR_CRASH: "Aviator crash",
+  AVIATOR_CRASH: "Aviator",
   BLACKJACK: "Blackjack",
   CASH_GAME: "Cash",
-  EUROPEAN_ROULETTE: "Roulette zipette",
-  MINE_SWEEPER: "Chasse au zipette coins",
-  SLOT_MACHINE: "Machine à sous"
-}
+  EUROPEAN_ROULETTE: "Roulette",
+  MINE_SWEEPER: "Chasse",
+  SLOT_MACHINE: "Machine",
+};
 
 type TListener = (message: IMessage) => void;
 
@@ -41,25 +41,28 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
 
   const _getListeners = (): TListener[] => {
     const listeners = localStorage.getItem("casino2zipette:listeners");
-    if(listeners) {
+    if (listeners) {
       const funcs = JSON.parse(listeners) as string[];
       return funcs.map((f: string) => eval(f));
     }
     return [];
-  }
+  };
   const _flushListeners = () => {
     localStorage.removeItem("casino2zipette:listeners");
-  }
+  };
   const _hasListener = (listener: TListener) => {
-    return !!_getListeners().find(f => f.toString() === listener.toString());
-  }
+    return !!_getListeners().find((f) => f.toString() === listener.toString());
+  };
   const _storeListener = (listener: TListener) => {
     const listeners = _getListeners();
-    localStorage.setItem("casino2zipette:listeners", JSON.stringify([
-      ...listeners.map(f => f.toString()),
-      listener.toString()
-    ]));
-  }
+    localStorage.setItem(
+      "casino2zipette:listeners",
+      JSON.stringify([
+        ...listeners.map((f) => f.toString()),
+        listener.toString(),
+      ])
+    );
+  };
 
   const connect = (game: TGame) => {
     const { me, token } = storeToRefs(useAuthenticationStore());
@@ -69,7 +72,7 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
       `${import.meta.env.VITE_WSS}/${encodeURI(token.value!)}/${game}`
     );
 
-    if(game !== actualGame.value) {
+    if (game !== actualGame.value) {
       _flushListeners();
     }
     _getListeners().forEach((callback: TListener) => {
@@ -134,7 +137,10 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
     }
   };
 
-  const addMessageListener = (callback: (message: IMessage) => void, store: boolean = true) => {
+  const addMessageListener = (
+    callback: (message: IMessage) => void,
+    store: boolean = true
+  ) => {
     const func = ({ data }: any) => {
       try {
         if (typeof data === "string") {
@@ -144,7 +150,7 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
       } catch (e) {} // ignore
     };
 
-    if(store && !_hasListener(callback)) {
+    if (store && !_hasListener(callback)) {
       _storeListener(callback);
     }
     websocket.value?.addEventListener("message", func);
@@ -174,6 +180,6 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
     close,
     send,
     websocket,
-    actualGame
+    actualGame,
   };
 });
