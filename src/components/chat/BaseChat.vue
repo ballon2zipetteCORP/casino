@@ -208,6 +208,9 @@ watch(
   font-size: 1em;
   cursor: pointer;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transition: background-color 0.3s ease;
 }
 

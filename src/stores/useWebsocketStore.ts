@@ -39,30 +39,7 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
 
   const actualGame = ref<TGame | null>(null);
 
-  const _getListeners = (): TListener[] => {
-    const listeners = localStorage.getItem("casino2zipette:listeners");
-    if (listeners) {
-      const funcs = JSON.parse(listeners) as string[];
-      return funcs.map((f: string) => eval(f));
-    }
-    return [];
-  };
-  const _flushListeners = () => {
-    localStorage.removeItem("casino2zipette:listeners");
-  };
-  const _hasListener = (listener: TListener) => {
-    return !!_getListeners().find((f) => f.toString() === listener.toString());
-  };
-  const _storeListener = (listener: TListener) => {
-    const listeners = _getListeners();
-    localStorage.setItem(
-      "casino2zipette:listeners",
-      JSON.stringify([
-        ...listeners.map((f) => f.toString()),
-        listener.toString(),
-      ])
-    );
-  };
+  const actualListeners = ref<TListener[]>([]);
 
   const connect = (game: TGame) => {
     const { me, token } = storeToRefs(useAuthenticationStore());
@@ -71,13 +48,6 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
     websocket.value = new WebSocket(
       `${import.meta.env.VITE_WSS}/${encodeURI(token.value!)}/${game}`
     );
-
-    if (game !== actualGame.value) {
-      _flushListeners();
-    }
-    _getListeners().forEach((callback: TListener) => {
-      addMessageListener(callback);
-    });
     actualGame.value = game;
 
     websocket.value.onopen = () => {
@@ -103,6 +73,10 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
       }
       try {
         const data = JSON.parse(message);
+
+        actualListeners.value.forEach((listener) => {
+          listener(data);
+        });
         // theses errors are sent by the WS
         if (data.type === "ERROR") {
           console.error(data.data);
@@ -137,23 +111,8 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
     }
   };
 
-  const addMessageListener = (
-    callback: (message: IMessage) => void,
-    store: boolean = true
-  ) => {
-    const func = ({ data }: any) => {
-      try {
-        if (typeof data === "string") {
-          data = JSON.parse(data);
-        }
-        callback(data);
-      } catch (e) {} // ignore
-    };
-
-    if (store && !_hasListener(callback)) {
-      _storeListener(callback);
-    }
-    websocket.value?.addEventListener("message", func);
+  const addMessageListener = (callback: (message: IMessage) => void) => {
+    actualListeners.value.push(callback);
   };
 
   const send = (data: string | Record<string, unknown>) => {
