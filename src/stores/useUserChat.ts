@@ -14,9 +14,9 @@ export const userChatStore = defineStore("chat", () => {
   const initialized = ref<boolean>(false);
 
   const init = () => {
-    if(initialized.value) return;
+    if (initialized.value) return;
     initialized.value = true;
-    useWebsocketStore().addMessageListener((message: any) => {
+    useWebsocketStore().addChatListener((message: any) => {
       if (message.type === "CHAT_RECEIVED") {
         chats.value.push({
           content: message.content,

@@ -40,6 +40,7 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
   const actualGame = ref<TGame | null>(null);
 
   const actualListeners = ref<TListener[]>([]);
+  const chatListener = ref<TListener | null>(null);
 
   const connect = (game: TGame) => {
     const { me, token } = storeToRefs(useAuthenticationStore());
@@ -48,6 +49,11 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
     websocket.value = new WebSocket(
       `${import.meta.env.VITE_WSS}/${encodeURI(token.value!)}/${game}`
     );
+
+    if (actualGame.value !== game) {
+      actualListeners.value = [];
+    }
+
     actualGame.value = game;
 
     websocket.value.onopen = () => {
@@ -77,6 +83,11 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
         actualListeners.value.forEach((listener) => {
           listener(data);
         });
+
+        if (chatListener.value !== null) {
+          chatListener.value(data);
+        }
+
         // theses errors are sent by the WS
         if (data.type === "ERROR") {
           console.error(data.data);
@@ -115,6 +126,10 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
     actualListeners.value.push(callback);
   };
 
+  const addChatListener = (callback: (message: IMessage) => void) => {
+    chatListener.value = callback;
+  };
+
   const send = (data: string | Record<string, unknown>) => {
     let message: string;
     if (typeof data !== "string") {
@@ -136,6 +151,7 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
   return {
     connect,
     addMessageListener,
+    addChatListener,
     close,
     send,
     websocket,
