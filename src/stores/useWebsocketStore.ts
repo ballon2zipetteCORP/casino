@@ -46,6 +46,7 @@ export const useWebsocketStore = defineStore("websocketStore", () => {
     const { me, token } = storeToRefs(useAuthenticationStore());
 
     identityId.value = me.value!.id;
+    websocket.value?.close();
     websocket.value = new WebSocket(
       `${import.meta.env.VITE_WSS}/${encodeURI(token.value!)}/${game}`
     );
