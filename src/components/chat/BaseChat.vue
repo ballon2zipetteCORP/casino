@@ -96,6 +96,16 @@ watch(
   },
   { immediate: true, deep: true }
 );
+
+watch(
+  chatContainer,
+  () => {
+    if (chatContainer.value) {
+      scrollToBottom();
+    }
+  },
+  { once: true }
+);
 </script>
 
 <style scoped>
