@@ -16,7 +16,7 @@ export const userChatStore = defineStore("chat", () => {
 
   const { data } = useAPIRequest<IChat[]>({
     method: "GET",
-    endpoint: "/chat",
+    endpoint: "/chat?limit=100",
     immediate: true,
   });
 
