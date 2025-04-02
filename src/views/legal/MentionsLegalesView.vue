@@ -53,7 +53,7 @@
 </p>
 
 <h2>5. Protection des Données Personnelles</h2>
-<p>Conformément au RGPD, les informations collectées sur ce site sont destinées à [finalités de la collecte]. Vous disposez d'un droit d'accès, de rectification et de suppression de vos données en contactant assiasamosbraquageforsure@ballon2zipette.com.
+<p>Conformément au RGPD, les informations collectées sur ce site sont destinées à vous envoyer par mails un QRCODE pour retirer vos lots. Vous disposez d'un droit d'accès, de rectification et de suppression de vos données en contactant assiasamosbraquageforsure@ballon2zipette.com.
 </p>
 
 <h2>6. Cookies</h2>
