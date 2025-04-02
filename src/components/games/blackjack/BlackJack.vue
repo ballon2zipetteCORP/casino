@@ -248,12 +248,14 @@ const handleMessages = () => {
 
       case "GAME_WIN":
         gameOver.value = true;
+        const winValue =
+          playerHandValue.value == 21 ? bet.value! * 2 : bet.value! * 2.5;
         window.toast({
           level: "SUCCESS",
           title: "Gagner",
-          subtitle: `Tu remportes ${bet.value! * 2} ZPC !`,
+          subtitle: `Tu remportes ${winValue} ZPC !`,
         });
-        me.value!.zipetteCoins += bet.value! * 2;
+        me.value!.zipetteCoins += winValue;
         break;
     }
   });

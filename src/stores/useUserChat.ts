@@ -1,5 +1,6 @@
+import useAPIRequest from "@/composables/useAPIRequest";
 import { defineStore, storeToRefs } from "pinia";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { GameMapper, useWebsocketStore, type TGame } from "./useWebsocketStore";
 
 interface IChat {
@@ -13,10 +14,26 @@ export const userChatStore = defineStore("chat", () => {
   const chats = ref<IChat[]>([]);
   const initialized = ref<boolean>(false);
 
+  const { data } = useAPIRequest<IChat[]>({
+    method: "GET",
+    endpoint: "/chat?limit=100",
+    immediate: true,
+  });
+
+  watch(data, (newData) => {
+    if (newData) {
+      chats.value = newData.map((chat) => ({
+        content: chat.content,
+        displayName: chat.displayName,
+        game: chat.game,
+      }));
+    }
+  });
+
   const init = () => {
-    if(initialized.value) return;
+    if (initialized.value) return;
     initialized.value = true;
-    useWebsocketStore().addMessageListener((message: any) => {
+    useWebsocketStore().addChatListener((message: any) => {
       if (message.type === "CHAT_RECEIVED") {
         chats.value.push({
           content: message.content,

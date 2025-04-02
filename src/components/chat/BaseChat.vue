@@ -14,8 +14,10 @@
           >{{ chat.displayName }}
           <span
             class="game"
-            :class="GameMapper[chat.game as TGame].toLowerCase()"
-            >{{ GameMapper[chat.game as TGame].toUpperCase() ?? "CHAT" }}</span
+            :class="(GameMapper[chat.game as TGame] || 'chat').toLowerCase()"
+            >{{
+              (GameMapper[chat.game as TGame] || "CHAT").toUpperCase() ?? "CHAT"
+            }}</span
           ></span
         >
         <p class="content">{{ chat.content }}</p>
@@ -95,6 +97,16 @@ watch(
     });
   },
   { immediate: true, deep: true }
+);
+
+watch(
+  chatContainer,
+  () => {
+    if (chatContainer.value) {
+      scrollToBottom();
+    }
+  },
+  { once: true }
 );
 </script>
 
@@ -245,6 +257,10 @@ watch(
   to {
     transform: translateY(0%);
   }
+}
+
+.chat {
+  color: var(--gray-4);
 }
 
 .cash {
