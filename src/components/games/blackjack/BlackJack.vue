@@ -249,7 +249,7 @@ const handleMessages = () => {
       case "GAME_WIN":
         gameOver.value = true;
         const winValue =
-          playerHandValue.value == 21 ? bet.value! * 2 : bet.value! * 2.5;
+          playerHandValue.value == 21 ? bet.value! * 2.5 : bet.value! * 2;
         window.toast({
           level: "SUCCESS",
           title: "Gagner",
