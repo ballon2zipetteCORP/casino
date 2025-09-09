@@ -93,7 +93,7 @@ export const useAuthenticationStore = defineStore("authenticationStore", () => {
       throw new Error(`HTTP ERROR: ${response.status}: ${response.statusText}`);
     }
     const data = await response.json();
-    console.log("me", daga?.me);
+    console.log("me", data?.me);
     _me.value = data?.me ?? undefined;
   };
 
