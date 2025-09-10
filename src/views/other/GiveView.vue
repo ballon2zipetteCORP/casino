@@ -133,6 +133,7 @@ watch(
 );
 
 const filteredUsers = computed(() => {
+  console.log(users.value);
   return users.value
     ? users.value
         .filter(
