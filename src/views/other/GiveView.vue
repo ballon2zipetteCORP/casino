@@ -127,6 +127,7 @@ watch(
       return router.push({ name: "home" });
     }
     handleGetUsers();
+    console.log(value);
     username.value = value!.upn;
   },
   { immediate: true }
