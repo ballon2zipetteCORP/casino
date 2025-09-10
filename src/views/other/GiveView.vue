@@ -127,15 +127,12 @@ watch(
       return router.push({ name: "home" });
     }
     handleGetUsers();
-    console.log(value);
-    username.value = value!.upn;
+    username.value = value!.name;
   },
   { immediate: true }
 );
 
 const filteredUsers = computed(() => {
-  console.log(users.value);
-  console.log(username.value);
   return users.value
     ? users.value
         .filter(
